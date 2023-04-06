@@ -2,7 +2,7 @@ TITLE=rg_report
 
 all: $(TITLE).ms
 	refer -e -S -sA -p ~/docs/roff/bib $(TITLE).ms | \
-		groff -ms -e -t -p > $(TITLE).ps
+		groff -ms -e -t -p -Tps > $(TITLE).ps
 	ps2pdf $(TITLE).ps temp.pdf
 	pdftk temp.pdf cat 1-2 r2 3-r3 r1 output $(TITLE).pdf
 	rm temp.pdf

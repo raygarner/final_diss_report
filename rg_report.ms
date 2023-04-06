@@ -24,28 +24,6 @@ text streams and pipes and comparing the results to existing popular composition
 I would like to thank God for everything.
 .bp
 .SH 1
-List of Figures
-.LP
-.TS
-expand;
-l n .
-Pipeline example	4
-Bach chord frequency	8
-Bach chord transition frequency	9
-Folk-song note frequency	9
-Folk-song note transition frequency	10
-Further pipeline examples	12
-Project management gantt chart	13
-.TE
-.SH 1
-List of Tables
-.LP
-.TS
-expand;
-l n .
-Implementation and workflow philosophies	3
-.TE
-.SH 1
 List of abbreviations
 .LP
 .TS
@@ -155,6 +133,9 @@ The motivation for this project follows from the flaws in the Bellcore music
 tools and IRCAM tools.
 These tools share many similarities and what one fails at, the other tends to succeed at.
 As shown in table 1, this project attempts to combine the successes of both of these systems.
+.DS C
+Table 1
+.DE
 .TS
 center;
 c | c c .
@@ -163,9 +144,6 @@ _
 OpenMusic implementation		
 IMG/1 implementation	This project	
 .TE
-.DS C
-Table 1
-.DE
 .PP
 Parallels between the IRCAM style solutions and the Bellcore music tools
 can be drawn: both make the user interact with the system by sequentially applying
@@ -211,82 +189,38 @@ Aims and Objectives
 Aims and Objectives
 .XE
 .LP
-The aims and objectives of this project can be categorised into those which are primary
-and those which are architectural.
-Primary objectives are goals which will mean the problem is solved if they are
-met.
-Architectural objectives define how the implementation of the system will be done.
-For clarity, I have also listed some points which are outside of the scope of the
-project.
 .NH 2
-Primary objectives
-.XS
-	Primary Objectives
-.XE
-.IP
-Generate tonality, harmony, and melody prompts for a composer to implement
-.IP
-Generate tonality from melody or harmony, harmony from melody or 
-tonality and melody from harmony or tonality
+Musical
 .LP
-To aid a composer this system will provide tonal, harmonic and melodic 
-prompts based on given musical input.
-These prompts must adhere to established rules of western music theory,
-corresponding accurately to the input data used to generate them.
-Additionally, the output must correlate with modern empirical analysis of 
-existing compositions. 
-Elements of style and taste are minimised since these are just prompts rather
-than complete compositions.
+Primarily, this software will need to produce musical output in the form of
+tonal, melodic and harmonic ideas for a human composer to interpret.
+These ideas must adhere appropriately to established music theory principles
+and relate accordingly to the input used to generate them.
+For this project we will define `melody' as single voice sequential lines, 
+`harmony' as a chord or sequence of chords (where a chord is 2 or more notes
+played concurrenty) and `tonality' as scales (where a scale is a set of intervals
+combined with a starting note).
+.NH 2
+Architectural
+.LP
+For this project it is important that the musical goals are achieved using the
+right means. The function of the system should be broken down into small
+orthogonal programs which are combined by the user using Unix pipes to produce
+the various outputs.
+This is advantageous to a user because it shows them clearly how the aspects of
+the system can be rearranged to produce a different desired output.
+Monolithic systems such as IRCAM style solutions have a huge ammount of internal
+functions implemented to facilitate proper output production but they are not
+exposed to the user for them to utilise, even though they may be of use.
+Building the system up in a modular fashion allows the user to just use the
+specific functions which they need rather than having to load the whole program
+just to use a small portion of it.
 .PP
-For this project we will define tonality as which mode of the major scale
-the music is based on, harmony as chords and melody as single note lines.
-.NH 2
-Architectural Objectives
-.XS
-	Architectural Objectives
-.XE
-.IP
-Split into 3 programs: a mode generator (tonality), chord generator 
-(harmony) and melody generator
-.IP
-Each program must be able to read output from either of the other programs
-.IP
-Each program must be able to read input from a user
-.IP
-The output from each of the programs must be human readable
-.LP
-Splitting the functionality of the system into 3 different programs allows for
-them to be combined in various ways, producing different results.
-It follows that the system is divided this way since the focus of this tool is
-these 3 areas of music.
-Output to input compatibility and vice versa is important so that the programs
-can be combined using pipes. 
-The output must also be human readable so that it can be interpreted without
-additional translation software. Figure 1 shows a simple usage example:
-.PS
-box invis "user input"
-arrow
-box "mode generator" wid 1
-arrow
-box "melody generator" wid 1.1
-arrow
-box invis "output" wid 0.5
-.PE
-.DS C
-Figure 1
-.DE
-Here the user inputs either a melody or chord into the mode generator, and the
-mode outputted by that program is fed straight into the melody generator which
-uses it to produce a melody.
-The melodic output goes to 
-.CW STDOUT , 
-allowing the user to redirect it to a file 
-or other program using standard Unix operators.
+The output format must be easy for a human to read, but also simple for a
+computer program to interpret. This will make the user interaction more intuitive
+by removing the need for intermediary translation programs in the pipeline.
 .NH 2
 Not objectives
-.XS
-	Not objectives
-.XE
 .IP
 MIDI output
 .IP
@@ -321,25 +255,6 @@ and end with the writing of data. Between these two points in time, no further
 data will be inputted to the program.
 This contrasts IRCAM solutions which are running constantly while a user works
 on them but is in line with the Bellcore approach.
-.NH 1
-Dissertation Structure
-.XS
-Dissertation Structure
-.XE
-.LP
-The question this project attempts to answer is as follows: ``Can Unix-style
-computer aided composition software be effective?''
-To answer this I will develop a computer aided composition system by combining
-elements of OpenMusic and the Bellcore music tools and then quantitatively
-compare the output from it with existing compositions (see the methodology
-section for more on this).
-.PP
-After explaining the background and motivation for the project and reviewing
-the primary relevant existing literature on the topic, this report
-explores methodologies for development and evaluation and goes on to explain
-preliminary design choices and prototypes.
-The final chapter of this report reflects on LSEPI issues considered
-during the work on this project.
 .NH 1
 Literature Review
 .XS
@@ -391,9 +306,6 @@ of `New Jersey' style software development in the field of computer aided compos
 building on ideas demonstrated by the Bellcore music tools.
 .NH 2
 IRCAM
-.XS
-	IRCAM
-.XE
 .LP
 IRCAM say the purpose of computer aided composition research was to `provide
 composers with the means to develop musical ideas and models using the 
@@ -406,9 +318,6 @@ to implement a solution using a methodology inline with the Bellcore philosophy
 (Unix philosophy).
 .NH 2
 Bellcore
-.XS
-	Bellcore
-.XE
 .LP
 Figure 1 in `Unix Music Tools at Bellcore' shows a script generating a `march'
 style piece of music.
@@ -453,9 +362,6 @@ as much flexibility and freedom to allow skilled composers to express themselves
 as accurately as possible. 
 .NH 2
 Justification for this work
-.XS
-	Justification for this work
-.XE
 .LP
 This project attempts to combine the implementation philosophy of IMG/1
 (Bellcore, Unix, New Jersey) with the composition and UI philosophy of OpenMusic
@@ -479,18 +385,8 @@ Methodology
 .XS
 Methodology
 .XE
-.LP
-I have categorised the methodologies for this project into technologies and
-evaluation methods.
-`Technologies' refers to target platforms and programming language whereas
-evaluation methods are what will be applied upon existing compositions and
-the output of the software developed for this project to provide data which
-can be meaningfully compared.
 .NH 2
 Technologies
-.XS
-	Technologies
-.XE
 .LP
 Since this project is about exploring the effectiveness of applying Unix philosophy to
 computer aided composition, the software will target Unix based platforms.
@@ -518,10 +414,277 @@ Continuing with the theme of Unix style and `New Jersey' style, I will write
 the software in C.
 This is also to make the software as portable as possible between the 
 various Unix-like operating systems.
+.ds CH
 .NH 2
+Music Theory
+.LP
+To understand the algorithms used in this project, it is essential to have a
+basic grasp of western music theory.
+Traditionally, there are 12 tones used to represent pitch. 
+Using sharps to represent accidentals (where flats are not used), the twelve 
+tones are C, C#, D, D#, E, F, F#, G, G#, A, A# and B.
+.NH 2
+Algorithms
+.NH 3
+Melody Generation
+.IP
+chord based generation (build skeleton melody then fill out)
+.[
+melody10
+.]
+.NH 3
+Harmony Generation
+.IP
+depth first search
+.bp
+.NH 1
+Design
+.XS
+Design
+.XE
+.NH 2
+Overview
+.LP
+As there are many ways to cut a cake, there are many ways to divide the overall
+functionality of our system into orthogonal programs. The following outlines
+how the system is broken down into building blocks which can be combined in
+various ways to produce output.
+.DS C
+Figure 1
+.DE
+.PS
+A: box "a" invis wid 0.3 at (0, 0)
+P: box "program" wid 1 at (1, 0)
+B: box "b" invis wid 0.3 at (2, 0)
+X: box "c" invis ht 0.3 wid 0.2 at (0.5, -0.75)
+Y: box "d*" invis ht 0.3 wid 0.2 at (1.5, -0.75)
+arrow from A.e to P.w
+arrow from P.e to B.w
+arrow from X.ne to P.s
+arrow from Y.nw to P.s
+.PE
+Figure 1 shows an example program in the format we use to represent the components
+of our system.
+The program takes input of type
+.CW a
+via
+.CW STDIN
+as well as input of type
+.CW c
+as a command line argument and optionally input of type
+.CW d
+as another command line argument.
+After reading these inputs, the program writes output of type
+.CW b
+to
+.CW STDOUT .
+.NH 2
+Mode Generator
+.LP
+The ``mode generator'' is a program which takes as command line arguments a
+set of notes and outputs the set of modes which each contain all of the notes
+in the input.
+If STDIN input is supplied then only modes also in the input set will be in
+the output set, otherwise all modes are considered.
+This functionality can be formalised using the following notation:
+.EQ
+pile {
+INP = roman{"set of modes inputted via STDIN"} 
+above { M = roman{"set of all modes"} }
+above { N = roman{"set of notes passed as arguments"} }
+above { P(m) = \[fa]n\[mo]N:n\[mo]m }
+above { output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]}
+}
+.EN
+Figure 2 shows the functionality of the mode generator in terms of its input
+and output types.
+.DS C
+Figure 2
+.DE
+.PS
+A: box "mode set*" invis 0.7 at (-0.5, 0)
+P: box "mode generator" wid 1 at (1, 0)
+B: box "mode set" invis wid 0.7 at (2.5, 0)
+X: box "note set" invis ht 0.3 wid 0.8 at (1, -1)
+arrow from A.e to P.w
+arrow from P.e to B.w
+arrow from X.n to P.s
+.PE
+.NH 2
+Interval filter
+.LP
+The interval filter is a program which takes as input a set of modes and also
+a set of intervals. It outputs all of the modes from the input which have the
+intervals specified. If no modes are given as input it outputs the modes from
+the set of all modes which have those intervals. This functionality is formalised
+by the following notation.
+.EQ
+pile {
+INP = roman{"set of modes inputted via STDIN"} 
+above { M = roman{"set of all modes"} }
+above { I = roman{"set of intervals passed as arguments"} }
+above { P(m) = \[fa]i\[mo]I:i\[mo]m }
+above { output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]}
+}
+.EN
+Figure 2 shows the functionality of the interval filter in terms of its input
+and output types.
+.DS C
+Figure 3
+.DE
+.PS
+A: box "mode set*" invis 0.7 at (-0.5, 0)
+P: box "interval filter" wid 1 at (1, 0)
+B: box "mode set" invis wid 0.7 at (2.5, 0)
+X: box "note set" invis ht 0.3 wid 0.8 at (1, -1)
+arrow from A.e to P.w
+arrow from P.e to B.w
+arrow from X.n to P.s
+.PE
+.NH 2
+Chord Builder
+.LP
+The chord builder is a program which takes as input a set of modes and also
+a degree of the scale to build a chord from with it as the root.
+Optionally, it may also take the degrees of any extensions to be added to the chord,
+relative to the chord root.
+For each mode in the input there is a corresponding chord in the output set.
+Chords are written to the output paried with the mode from the input used to
+build them.
+As with the previously mentioned programs which take as input a mode set via
+.CW STDIN ,
+if no modes are supplied the set of all modes is used.
+.DS C
+Figure 4
+.DE
+.PS
+A: box "mode set*" invis wid 0.7 at (-0.5, 0)
+P: box "chord builder" wid 1 at (1, 0)
+B: box "chord set" invis wid 0.7 at (2.5, 0)
+X: box "root degree" invis ht 0.3 wid 0.2 at (0.5, -0.75)
+Y: box "extensions relative to root*" invis ht 0.3 wid 0.2 at (1.5, -1)
+arrow from A.e to P.w
+arrow from P.e to B.w
+arrow from X.ne to P.s
+arrow from Y.nw to P.s
+.PE
+.NH 2
+Melody Generator
+.LP
+The melody generator is a program which takes as input as set of chords and
+produces a melody for each one which would work played concurrently with that
+chord. In addition to a set of chords as input, it takes the length of the
+melody to be generated and a seed value for randomness.
+.DS C
+Figure 5
+.DE
+.PS
+A: box "chord set" invis wid 0.7 at (-0.5, 0)
+P: box "melody generator" wid 1 at (1, 0)
+B: box "melody set" invis wid 0.7 at (2.5, 0)
+X: box "length" invis ht 0.3 wid 0.2 at (0.5, -0.75)
+Y: box "seed" invis ht 0.3 wid 0.2 at (1.5, -1)
+arrow from A.e to P.w
+arrow from P.e to B.w
+arrow from X.ne to P.s
+arrow from Y.nw to P.s
+.PE
+.NH 2
+Melody Harmoniser
+.LP
+The melody harmoniser takes a set of melodies as input and for each one
+writes 3 part harmony for it to the output set of harmonised melodies.
+Each 3-part harmony has the melody in the highest pitch line, with 2 accompanying
+lines beneath it in pitch.
+.DS C
+Figure 6
+.DE
+.PS
+A: box "melody set" invis wid 0.7 at (-1, 0)
+P: box "melody harmoniser" wid 1.2 at (1, 0)
+B: box "harmonised-melody set" invis wid 1.5 at (3, 0)
+arrow from A.e to P.w
+arrow from P.e to B.w
+.PE
+.NH 2
+MusicXML Formatter
+.LP
+The musicxml formatter reads a set of haronised melodies and outputs sheet music
+containing each one after the other, represented using MusicXML
+.[ (
+musicxml01
+.]).
+.DS C
+Figure 7
+.DE
+.PS
+A: box "harmonised melody set" invis wid 1.5 at (-1, 0)
+P: box "musicxml formatter" wid 1.2 at (1, 0)
+B: box "musicxml data" invis wid 1 at (3, 0)
+arrow from A.e to P.w
+arrow from P.e to B.w
+.PE
+.NH 2
+Mode Displays
+.LP
+To demonstrate the extensibility of the system, I developed 2 alternate 
+end-points for mode sets to be pipes into.
+Instead of generating musical ideas which could be piped into other programs, 
+these draw alternate representations of modes in the terminal for the user to
+read.
+There is one to display modes on a guitar fretboard and one to display them
+on a stave using traditional key signature notation.
+.DS C
+Figure 8
+.DE
+.PS
+A: box "mode set" invis wid 0.7 at (-1, 0)
+P: box "fretboard formatter" wid 1.2 at (1, 0)
+B: box "fretboard display" invis wid 1 at (3, 0)
+arrow from A.e to P.w
+arrow from P.e to B.w
+.PE
+.DS C
+Figure 9
+.DE
+.PS
+A: box "mode set" invis wid 0.7 at (-1, 0)
+P: box "stave formatter" wid 1.2 at (1, 0)
+B: box "stave display" invis wid 1 at (3, 0)
+arrow from A.e to P.w
+arrow from P.e to B.w
+.PE
+.NH 1
+Implementation
+.XS
+Implementation
+.XE
+.LP
+Just use pseudocode and hand drawn diagrams
+.NH 2
+Common Data Types
+.NH 2
+Common Functions
+.NH 2
+Mode Set Building
+.NH 2
+Mode Set Filtering
+.NH 2
+Chord Building
+.NH 2
+Melody Generation
+.NH 2
+Melody Harmonisation
+.NH 2
+Conversion to MusicXML
+.NH 2
+Stave Key Signature Display
+.NH 2
+Fretboard Mode Display
+.NH 1
 Evaluation
 .XS
-	Evaluation
+Evaluation
 .XE
 .LP
 For effective testing and evaluation of the system a 
@@ -558,748 +721,19 @@ The results from this experiment provide a good benchmark for the frequency
 of notes in music.
 That is, the frequency of notes in melodies which listeners find satisfying 
 will roughly match the results of the `probe tone' experiment.
-.PP
-With these ideas in mind, we can start to apply similar methods to existing
-compositions and build a picture to which we can compare analysis
-of the output of this project against. `Music21'
-.[
-music21
-.]
-is a Python module which provides a framework for musicology.
-As well as providing rich toolkit for analysis of music, it also
-has a built in corpus of roughly 3000 pieces comprised of popular folk songs
-and works by over 20 iconic classical composers from varying eras.
-To create a benchmark to compare the output of my system to, I will apply
-the aforementioned music analysis techniques to the Music21 corpus using the
-functions it provides.
-.PP
-The python style pseudocode function
-.CW "analyse_chord_freq"
-returns the frequencies of chords for a given score split into two categories
-based on the tonal context of each chord.
-It gets the key signature of each bar of the score and uses that to determine
-the role of each chord in the bar.
-The function also accounts for tonal certainty, which means that results
-derived from bars with a more ambiguous key signature will contribute less to
-the frequency evaluation.
-.PP
-Figure 3 shows results from
-.CW analyse_chord_freq
-applied when it is fully implemented using Music21 and applied to over 400
-Bach works from the Music21 corpus.
-It shows that for both major and minor keys, over 40% of chords are chord 1 and
-over 20% are chord 5.
-.DS
-.ft C
-def analyse_chord_freq(score):
-	for m in score.makeMeasures()
-		k = score.measure(m).analyze('key')
-		for c in m.chordify()
-			if k.mode == "major":
-				ma[degree(c, k)] += k.tonalCertainty()
-			elif k.mode == "minor":
-				mi[degree(c, k)] += k.tonalCertainty()
-	return (ma,mi)
-.ft
-.DE
-.PSPIC -C img/bach_chord_freq.eps 3i
-.DS C
-Figure 3
-.DE
-The function
-.CW analyse_chord_trans_freq
-is a variation on
-.CW analyse_chord_freq
-and returns the frequency of chord transitions.
-For major and minor, it uses a matrix rather than a list to store frequency
-data.
-The same principles of examining the key signature for each bar and accounting
-for tonal certainty apply.
-Results from a full implementation of
-.CW analyse_chord_trans_freq
-are shown in figure 4.
-It shows that the most common asymmetric chord transitions are 1 to 5 and 5 to
-1. 
-The results from both of these functions correspond with traditional music theory
-ideas, particularity for the Baroque style.
-.DS
-.ft C
-def analyse_chord_trans_freq(score):
-	for m in score.makeMeasures()
-		k = score.measure(m).analyze('key')
-		mchords = m.chordify()
-		for c in len(mchords):
-			ca = degree(mchords[c],k)
-			cb = degree(mchords[c+1],k)
-			if k.mode == "major":
-				ma[ca][cb] += k.tonalCertainty()
-			elif k.mode == "minor":
-				mi[ca][cb] += k.tonalCertainty()
-	return (ma,mi)
-.ft
-.DE
-.PSPIC -C img/bach_chord_trans_freq.eps 3i
-.DS C
-Figure 4
-.DE
-.PP
-These two functions are relevant because I intend on running them
-on output from the software written for this project and comparing the results
-to those from works by traditional composers such as Bach.
-In addition to chord frequency and chord transition frequency, I intend on
-examining note frequency in the melody (highest line) and inversion frequency
-for each chord.
-.PP
-Similarly, figure 5 shows the frequency of notes in the melodies of over 500
-folk songs from the Music21 corpus.
-That is, the x axis represents the degree of the scale (1 means the first note
-in key scale) and the y axis shows the number of occurrences in the data
-analysed.
-The frequency of note transitions is shown in Figure 6. Contrasting the frequency
-of chord transitions, this analysis shows that melodies tend to move in a step-wise
-fashion with the majority of notes being followed by another that is 1 degree
-up or down in the key scale.
-.PSPIC -C img/note_freq_folk_maj.eps 3i
-.DS C
-Figure 5
-.DE
-.PSPIC -C img/folk_note_trans_maj.eps 3i
-.DS C
-Figure 6
-.DE
-.PP
-Going further, variations on these analysis methods can be tested.
-Pitch range, feature distribution and inversion 
-(order of notes in a chord) frequency can all be examined to help provide a
-quantitative goal for computer aided composition software output.
+.PSPIC -C img/eval/chord_freq.eps
+.PSPIC -C img/eval/chord_trans_freq.eps
+.PSPIC -C img/eval/note_freq.eps
+.PSPIC -C img/eval/melody_note_trans_freq.eps
 .NH 1
-Design
+Summary
 .XS
-Design
-.XE
-.LP
-The design for this project will need to tackle issues such as representing
-musical data in code and how the component programs of the system
-should be able to be arranged to maximise versatility.
-.NH 2
-Internal Encoding of Musical Data
-.XS
-	Internal Encoding of Musical Data
-.XE
-.LP
-A musical mode can be though of as a permutation of intervals. For example,
-a standard western major scale (Ionian) is W-W-H-W-W-W-H
-.[
-modes12
-.]
-where `W' represents a whole-tone and `H' represents a half-tone (semitone).
-This sequence of intervals is circular and therefore repeats forever.
-The concept of `modes of the major scale' refers to treating the first/tonic/root
-of the scale as a different note in this specific sequence of intervals.
-For example, the intervals of the Dorian scale (second mode of the major scale)
-are W-H-W-W-W-H-W. 
-.[ (
-modes12
-.]).
-.PP
-An intuitive implementation concept following from this principle is to represent
-a mode as a circular list, a half-tone as the integer 1 and a whole-tone as the
-integer 2.
-Alternatively, modular arithmetic could be used to index a standard list of 
-intervals in a circular manor.
-In correspondence with this, the entire standard western note vocabulary could be
-represented by integers, allowing scales (modes) to be built by repeatedly
-adding intervals to a note defined as the tonic.
-.DS
-.ft C
-#define DEGREES 7
-#define NOTES   12
-#define EMPTY   -1
-
-enum Interval {
-	H = 1,
-	W = 2
-};
-
-const int IONIAN[DEGREES] = {W, W, H, W, W, W, H};
-
-void
-fill_notes(int notes[NOTES], int start, int m)
-{
-	int n = (start - 1) % NOTES, d = 0;
-
-	while (notes[n] == EMPTY) {
-		notes[n] = d;
-		n = (n + IONIAN[(d + m) % DEGREES]) % NOTES;
-		d = (d + 1) % DEGREES;
-	}
-}
-.ft
-.DE
-The code above is an excerpt from a program I developed to explore this method
-of music representation.
-The function
-.CW fill_notes
-produces a list where the index corresponds to a note and the value of the
-element is the degree of the key scale that note is (the value is left as
-.CW EMPTY
-if it is not part of the key).
-The variable
-.CW m
-is the mode of the major scale being mapped (which degree is being treated as
-the first from the circular definition of the major scale) and
-.CW start
-is the note the tonic is defined as (a combination of tonic note and mode is
-adequate to determine a key signature).
-.CW NOTES 
-is defined as 12 because there are 12 semitones in an octave and
-the scale being mapped is a one octave scale.
-.PP
-An alternative approach is applied in ``Bach in a Box''
-.[ (
-bach94
-.]).
-To simplify the problem, their approach only operates in the key of C major 
-and does not consider any notes at all which aren't in that key signature.
-Similar to the method discussed above, Bach in a Box uses integers to represent
-notes, however their system means that the pitch difference between each adjacent
-pair of notes isn't uniform.
-For example, the different between 0 and 1 is a whole-tone but the difference
-between 2 and 3 is a half-tone.
-Of course, this is due to the W-W-H-W-W-W-W-H configuration of the major scale.
-By contrast, the arrangement of the previous method means that the pitch difference
-between any pair of adjacent integers representing notes is always a half-tone.
-In addition to limiting the key signature to only C major, the exclusion of
-non-diatonic notes (notes not in the key signature) means that some techniques
-used to add extra `colour' to melodies and chords are omitted.
-.PP
-With a means of establishing tonality (key signature/mode) in place, the framework for
-building chords and melodies is established.
-The overwhelming majority of notes, whether in a melody or in a chord, in western
-music are diatonic (part of the key signature).
-The presence of a key signature reduces the search space for satisfactory notes
-in a chord or melody because notes which are likely to sound dissonant
-are excluded by the key.
-.NH 2
-Architecture
-.XS
-	Architecture
-.XE
-.LP
-As stated, the system will be split into 3 separate programs to facilitate the
-generation of tonality (modes), harmony (chords) and melodies.
-To communicate, the programs will use Unix style text streams and pipes.
-Some examples of combinations of the programs are shown below:
-.PS
-box invis "user input"
-arrow
-box "mode generator" wid 1
-arrow
-box "melody generator" wid 1.1
-arrow
-box invis "output" wid 0.5
-.PE
-.PS
-box invis "user input"
-arrow
-box "melody generator" wid 1
-arrow
-box "chord generator" wid 1.1
-arrow
-box "mode generator" wid 1.1
-arrow
-box invis "output" wid 0.5
-.PE
-.PS
-box invis "user input"
-arrow
-box "chord generator" wid 1
-arrow
-box invis "output" wid 0.5
-.PE
-On a unix-style command line this will look something like this:
-.DS
-.ft C
-$ echo $INPUT | modegenerator | melodygenerator
-abccdc
-$ echo $INPUT | melodygenerator | chordgenerator | modegenerator
-cwwhwwwh
-$ echo $INPUT | chordgenerator
-cadgb
-.ft
-.DE
-In addition to general usage shown above, each individual program will be
-able to take extra arguments to apply logical functions to the musical data.
-This is inspired by the functionality of OpenMusic
-.[
-openmusic11
-.]
-which encourages the composer (user) to modify musical elements using mathematical
-and logical functions.
-This allows for more flexibility and variation of output than a system such
-as COMPoZE
-.[
-compoze
-.]
-or IMG/1
-.[
-img191
-.]
-which interact with the user via natural language musical descriptors.
-The superiority of this approach is evidenced by the wide usage of OpenMusic
-by composers and lack of adoption of COMPoZE and IMG/1 by composers.
-.NH 2
-Data Transmission Protocol
-.XS
-	Data Transmission Protocol
-.XE
-.LP
-To facilitate the transmission of information via pipes between the individual 
-programs making up the system, a protocol must be established whereby data
-is serialised in a way which is simple for both user and computer to work with.
-Choices can be made in regards to the design of the protocol whereby they
-incur a tradeoff. This is generally between how simple it is for a computer
-to interpret versus how simple it is for a human to interpret.
-A good example of this is outputting modes; we could choose to represent 
-Ionian as 'wwwhwwwh' or 'Ionian'.
-With the software representation of music we have currently established in 
-mind, it is intuitive to parse and output modes represented using the former
-notation because it corresponds to our hardcoded Ionian representation:
-.DS
-.ft C
-#define DEGREES 7
-
-const int MAJOR_SCALE[DEGREES] = {W, W, H, W, W, W, H};
-
-void
-print_mode(int m)
-{
-	int d, i = MAJOR_SCALE[m];
-	char c;
-
-	for (d = 0; d < DEGREES; d++) {
-		c = i == W ? 'w' : 'h';
-		putchar(c);
-		m = (m + 1) % DEGREES;
-		i = MAJOR_SCALE[m];
-	}
-}
-.ft
-.DE
-Alternatively, printing of modes using the natural language representation
-requires hardcoding of strings:
-.DS
-.ft C
-#define DEGREES 7
-
-const char *MODES[DEGREES] = { "Ionian", "Dorian", "Phrygian", "Lydian", 
-                               "Mixolydian", "Aeolian", "Locrian" };
-
-void
-print_mode(int m)
-{
-	printf("%s", MODES[m]);
-}
-.ft
-.DE
-The first option is more extendable since there is no hardcoding and it
-computes the sequence of intervals based on a given scale (major scale).
-This means that modification to make it use a different set of intervals
-as a base scale (such as harmonic minor) would be easy to implement.
-In contrast, the method based on natural language would require all the new 
-names of the modes to be encoded.
-However, I believe that to have the modes printed in the form of natural
-language is important enough to warrant sacrificing extensibility in this case
-because it is a great deal more intuitive for a user to interpret than simply
-reading a sequence of intervals.
-.PP
-In addition to representing modes, we will need a method for representing
-pitches.
-Traditionally in music, pitches are represented by notes where a note can be
-considered as `sharp', `flat' or `natural'. These terms are relative;
-a note being sharp means that it is one semitone higher than it would otherwise
-be in a given context and similarly a note being flat means that it is one
-semitone lower. A note being natural means it is neither higher or lower
-pitched. 
-A simple approach to representing these using a computer would be to have two
-ascii characters per note. For example
-.CW an
-for A natural,
-.CW a-
-for A flat and
-.CW a+
-for a sharp.
-Traditionally in music, if there is no symbol it is assumed that the note is
-natural but explicitly stating it, as we have with the `n' character makes
-parsing this data simpler because no inferences need to be made and all notes
-will be of equal length (two characters).
-All characters here are standard ASCII characters so there will not be any
-requirements for extended character sets to be installed.
-The use of
-.CW -
-instead of
-.CW b
-to represent a flat is done because
-.CW b
-could be interpreted as a B note by a user at a glance and the usage of
-.CW +
-follows from this choice as it is universally recognised as the inverse 
-operation of
-.CW - .
-.PP
-Implementing wildcards to represent all/any notes would increase the flexibility
-of the system. For example `X Ionian' could be passed to a program to pass
-C Ionian, C# Ionian, D Ionian and so on. To keep all pitch representations as
-two characters long, the notation 
-.CW xx
-could be used.
-.NH 2
-Streams and Command Line Arguments
-.XS
-	Streams and Command Line Arguments
-.XE
-.LP
-Programs in the system will generally require two sets of data inputted to
-produce useful output. For example, the mode generator could take a list of
-notes and a list of modes and return all modes from the list which contain
-all notes from the list. Note that the output here is only one set of data and
-that this will be the case for other programs too. This means that simply
-piping the output from one program to another with no additional data inputted
-is not sufficient. Normally, Unix style command line programs take command
-line arguments, for example
-.CW "ls -l"
-and
-.CW "rm -r" .
-We can use a similar idea here for our mode generator:
-.DS
-.ft C
-$ echo "$MODES" | modegenerator "$NOTES"
-.ft
-.DE
-If we wanted our mode generator to operate on the set of all modes then we
-could implement another command line argument to specify this:
-.DS
-.ft C
-$ modegenerator "$NOTES" -
-.ft
-.DE
-To use this approach effectively, we must consider which data is appropriate
-to input via a stream and which data is appropriate to input via command line
-arguments.
-The main rule here is that if input data is more likely to be outputted by 
-another program then
-it should be read from a stream so that the programs can be connected with pipes.
-However if the data is more likely to be directly inputted by a user then
-it should be passed as a command line argument.
-.NH 1
-Implementation
-.XS
-Implementation
-.XE
-.NH 2
-Common Functions
-.XS
-	Common Functions
-.XE
-.LP
-In this section I will explain some of the common functions implemented for 
-this project. That is, functions that are put in the `library' and called 
-by at least 2 different programs in the system.
-.SH 3
-Ring Modulus
-.LP
-A function which is fundamental to the system is a simple one I have defined
-as
-.CW clock_mod .
-All it does is extend the functionality of C's modulo operator so that works
-as for a ring of numbers (which is how we are thinking of scales).
-.DS
-.ft C
-int
-clock_mod(int x, int mod)
-{
-	return x < 1 ? mod - (abs(x) % mod) : x % mod;
-}
-.ft
-.DE
-Although
-.CW mod
-is a parameter, it is always passed the value
-.CW TONES
-which is defined as the number of notes in a scale. Hardcoding or parameterising
-this value is largely inconsequential in my opinion but I parameterised it
-to make it more general.
-If the value of
-.CW x
-is positive then we just apply the regular C modulo operator as normal but if
-it is negative then find the value in the ring congruent to that of the
-absolute value of
-.CW x
-and then subtract it from the greatest number in the ring. That is, we go round
-the ring in reverse.
-.SH 3
-Stepping through a scale
-.LP
-For the various operations of this system is it frequently required to step
-through a scale. That is, apply the intervals of a mode to a given pitch
-context. Recall that a mode of the major scale uses the same intervals but
-starts on a different degree and you will understand that we can use the mode
-as an offset to represent this. Combine this with the offset representing the
-current degree of the scale we are on (a major scale has degrees 1-7) and you
-can use this to index the intervals of the major scale to find the correct one.
-Once you know whether the interval is a tone (2) or semitone (1) then you can
-just add it to the value of the current note to step to the next note in the
-scale.
-Of course this must operate within the bounds the rings we have defined, that
-is a 7 note scale and 12 tone pitch system.
-.DS
-.ft C
-int
-step(int degree, int note, int mode)
-{
-	return (note + MAJOR_SCALE[(degree + mode) % DEGREES]) % TONES;
-}
-.ft
-.DE
-.SH 3
-Determine if a note is diatonic
-.LP
-A note being diatonic in the context of a given key means that the key contains
-that note. For example, the key of C major contains CDEFGAB so G is diatonic
-but G# is not. In that last particular example the note is G#, the root is C
-and the mode is Ionian (major). The function simply steps through all notes
-in the scale and returns true if it finds one the same as the
-.CW note
-argument. If it steps through the whole scale and has not found the note yet
-then it returns false.
-.DS
-.ft C
-int
-is_diatonic(int note, int root, int mode)
-{
-	int d, cn = root;
-
-	for (d = 0; d < DEGREES; d++) {
-		if (cn == note)
-			return TRUE;
-		cn = step(d, cn, mode);
-	}
-	return FALSE;
-}
-.ft
-.DE
-.bp
-.SH 3
-Determine if a key is defined using the correct accidental
-.LP
-Even though two notes such as A# and Bb may have the same pitch to the ear,
-these two definitions mean different things. A# implies that A natural is not
-to be used in this context and Bb implies that B natural is not to be used in
-this context. This means that certain key signatures must be defined using
-one and not the other if you want to avoid using double accidentals.
-For example, Ab major is defined using 4 flats but G# major is defined using
-6 sharps and 1 double sharp. The behaviour of the function
-.CW is_correct_accidental
-would be such that if it takes G#/Bb as the root (both represented by the same
-number), Ionian (major) as the mode and flat as the accidental it would return
-true. However if it received the same arguments except with sharp as the
-accidental it would return false.
-The function essentially returns whether the key can be defined that way 
-without using double accidentals.
-This is important to consider when outputting data for a user to interpret
-because as we have shown, even through G# major and Ab major are enharmonic
-(sound the same), Ab major is significantly easier for a human musician to work
-with.
-.DS
-.ft C
-int
-is_accidental(int note)
-{
-	return !is_diatonic(note, C, IONIAN);
-}
-
-int
-is_correct_accidental(int root, int mode, int accidental)
-{
-	int d, cn = root;
-
-	if (clock_mod(root+mode,TONES) == C+1 || 
-	clock_mod(root+mode,TONES) == F+1 || clock_mod(root+mode,TONES) == B)
-		return TRUE;
-	for (d = 0; d < DEGREES; d++) {
-		if (is_accidental(cn) && 
-		is_diatonic(clock_mod(cn+accidental*-1, TONES), root, mode) && 
-		is_accidental(clock_mod(cn+accidental*-2, TONES))) {
-			return FALSE;
-		}
-		cn = step(d, cn, mode);
-	}
-	return TRUE;
-}
-.ft
-.DE
-I found that the simplest way to achieve this functionality was to hardcode
-keys which can be written using either sharps or flats (C+1, F+1, B) to return
-true and otherwise iterate through the scale evaluating a condiction. This
-condition is defined such that if the current note is between two natural notes
-and if the note sharped or flattened to get the pitch of the current note is
-also in the scale and if the note adjacant to that in the same direction is
-between two natural notes then writing the key this way requires double
-accidentals. If after iterating through every degree of the scale this 
-condition has not been met at least once then we can say that the key can be
-written without using double accidentals.
-C Ionian contains all natural notes and no accidentals so we can say that if
-a note is diatonic to C Ionian it is natural and if it is not then it is
-between 2 natural notes (requires an accidental to represent).
-.NH 2
-Mode Generator
-.XS
-	Mode Generator
-.XE
-.NH 2
-Interval Filter
-.XS
-	Interval Filter
-.XE
-.NH 2
-Chord Builder
-.XS
-	Chord Builder
-.XE
-.NH 2
-Fretboard Display
-.XS
-	Fretboard Display
-.XE
-.NH 1
-Evaluation
-.XS
-Evaluation
-.XE
-.NH 2
-Compile Time
-.XS
-	Compile Time
-.XE
-.NH 2
-Run Time
-.XS
-	Run Time
-.XE
-.NH 2
-Distribution Size
-.XS
-	Distribution Size
-.XE
-.NH 2
-Compatability
-.XS
-	Compatability
-.XE
-.NH 2
-Comparison to Existing Music
-.XS
-	Comparison to Existing Music
-.XE
-.NH 1
-Summary and Reflections
-.XS
-Summary and Reflections
+Summary
 .XE
 .NH 2
 Project Management
-.XS
-	Project Management
-.XE
-.LP
-How to quantitatively evaluate the output of the software for this project has
-been the problem I've focused on most so far.
-Solving this has involved getting to grips with Music21 and analysing existing
-music such as Bach chorales and folk-songs in a way which allows the results
-to be effectively compared against the analysis of the output of the software
-for this project.
-Of course, researching existing literature has been a large part of the work so
-far as well.
-The main topics of the existing literature researched were computer aided composition,
-music analysis and development methodologies.
-Figure 7 shows an updated gantt chart based on work currently carried out and
-work required to complete the project.
-.PSPIC -C img/gantt22.eps 6i
-.PSPIC -C img/gantt23.eps 6i
-.DS C
-Figure 7
-.DE
 .NH 2
-Contributions and reflections
-.XS
-	Contributions and reflections
-.XE
-.LP
-The appropriate role of this software within the 
-sphere of computer aided composition became more specific when I categorised
-existing solutions into `MIT' and `New Jersey' styles.
-This contrast of approaches provides a map of development philosophies, 
-simplifying the identification of gaps in existing research.
-.PP
-The conception of the idea for this project was based on producing a computer
-aided composition tool which adheres to Unix philosophy
-.[ (
-unix84
-.]).
-This idea has remained central to the project, but the discovery of the
-Music21
-.[
-music21
-.]
-python musicology library was something I did not anticipate.
-This tool has proved to be valuable for its powerful analysis functions and
-rich built in corpus.
-Despite not being used for the primary software produced for this project,
-Music21 has played an important role in analysing existing compositions and
-providing a quantitative benchmark which the software developed for this project
-aims to match with its output.
-.PP
-A potential intellectual property issue arose when considering how to evaluate
-the software developed for this project.
-After deciding to use a method whereby existing compositions and the output of this
-project would be quantitatively analysed and compared, it became apparent that a source
-of existing compositions was required which permits their usage in this
-research.
-The existing works the analysis will focus on are Bach chorales because
-there are established quantitative analysis methods which have been applied
-to them in previous research
-.[
-bach08
-.]
-and folk-songs because they offer a contrast in style and are unlikely to be
-restricted by copyright.
-Additionally, the Music21
-.[
-music21
-.]
-built in corpus provides many Bach chorales and folk-songs for analysis.
-.PP
-The work for this project does not involve any human participants or data subjects.
-Initially, qualitative evaluation of the software by human participants was considered
-but decided against on account of composition being so highly subject to personal
-preference. The work for this project also does not use any personal data.
-.PP
-A broader consideration for this project is how its role will evolve as music
-styles change over time.
-Another benefit of the Unix style approach is that the modularity it provides
-makes modification of the software simpler than if it was a monolithic system.
-Within the context of music, this is useful because the demands of users will
-certainly change over time as conventions and tastes in music develop.
-This principle is also partly why I believe a system which outputs musical prompts
-for a human composer to arrange and implement is more useful than a system which
-attempts to entirely automate the music composition process, outputting complete
-pieces.
-A system such as that will stay relevant for less time because as time goes on
-what it produces will be further from what people desire.
-Ideas which are meant for a human composer to arrange and implement will stay
-relevant for longer because the human composer will be able to arrange them
-in a way which adheres to whatever conventions they choose.
-.ds CH
+Contributions and Reflections
 .bp
 .TC
 .bp
