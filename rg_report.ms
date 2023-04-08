@@ -421,8 +421,8 @@ Music Theory
 To understand the algorithms used in this project, it is essential to have a
 basic grasp of western music theory.
 Traditionally, there are 12 tones used to represent pitch. 
-Using sharps to represent accidentals (where flats are not used), the twelve 
-tones are C, C#, D, D#, E, F, F#, G, G#, A, A# and B.
+Using sharps to represent accidentals, the twelve tones are C, C#, D, D#, E, 
+F, F#, G, G#, A, A# and B.
 .NH 2
 Algorithms
 .NH 3
@@ -449,19 +449,17 @@ As there are many ways to cut a cake, there are many ways to divide the overall
 functionality of our system into orthogonal programs. The following outlines
 how the system is broken down into building blocks which can be combined in
 various ways to produce output.
-.DS C
-Figure 1
-.DE
 .PS
+F: box "Figure 1: example program functionality" invis at (1, 1)
 A: box "a" invis wid 0.3 at (0, 0)
 P: box "program" wid 1 at (1, 0)
 B: box "b" invis wid 0.3 at (2, 0)
-X: box "c" invis ht 0.3 wid 0.2 at (0.5, -0.75)
-Y: box "d*" invis ht 0.3 wid 0.2 at (1.5, -0.75)
+X: box "c" invis ht 0.3 wid 0.2 at (1, 0.75)
+Y: box "d*" invis ht 0.3 wid 0.2 at (1, -0.75)
 arrow from A.e to P.w
 arrow from P.e to B.w
-arrow from X.ne to P.s
-arrow from Y.nw to P.s
+arrow from X.s to P.n
+arrow from Y.n to P.s
 .PE
 Figure 1 shows an example program in the format we use to represent the components
 of our system.
@@ -498,14 +496,12 @@ above { output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC
 .EN
 Figure 2 shows the functionality of the mode generator in terms of its input
 and output types.
-.DS C
-Figure 2
-.DE
 .PS
+F: box "Figure 2: mode generator functionality" invis at (1,0.5)
 A: box "mode set*" invis 0.7 at (-0.5, 0)
 P: box "mode generator" wid 1 at (1, 0)
 B: box "mode set" invis wid 0.7 at (2.5, 0)
-X: box "note set" invis ht 0.3 wid 0.8 at (1, -1)
+X: box "note set" invis ht 0.3 wid 0.8 at (1, -0.75)
 arrow from A.e to P.w
 arrow from P.e to B.w
 arrow from X.n to P.s
@@ -527,16 +523,14 @@ above { P(m) = \[fa]i\[mo]I:i\[mo]m }
 above { output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]}
 }
 .EN
-Figure 2 shows the functionality of the interval filter in terms of its input
+Figure 3 shows the functionality of the interval filter in terms of its input
 and output types.
-.DS C
-Figure 3
-.DE
 .PS
+F: box "Figure 3: interval filter functionality" invis at (1,0.5)
 A: box "mode set*" invis 0.7 at (-0.5, 0)
 P: box "interval filter" wid 1 at (1, 0)
 B: box "mode set" invis wid 0.7 at (2.5, 0)
-X: box "note set" invis ht 0.3 wid 0.8 at (1, -1)
+X: box "interval set" invis ht 0.3 wid 0.8 at (1, -0.75)
 arrow from A.e to P.w
 arrow from P.e to B.w
 arrow from X.n to P.s
@@ -554,19 +548,17 @@ build them.
 As with the previously mentioned programs which take as input a mode set via
 .CW STDIN ,
 if no modes are supplied the set of all modes is used.
-.DS C
-Figure 4
-.DE
 .PS
+F: box "Figure 4: chord builder functionality" invis at (1,1)
 A: box "mode set*" invis wid 0.7 at (-0.5, 0)
 P: box "chord builder" wid 1 at (1, 0)
 B: box "chord set" invis wid 0.7 at (2.5, 0)
-X: box "root degree" invis ht 0.3 wid 0.2 at (0.5, -0.75)
-Y: box "extensions relative to root*" invis ht 0.3 wid 0.2 at (1.5, -1)
+X: box "root degree" invis ht 0.3 wid 0.2 at (1, 0.75)
+Y: box "extensions relative to root*" invis ht 0.3 wid 0.2 at (1, -0.75)
 arrow from A.e to P.w
 arrow from P.e to B.w
-arrow from X.ne to P.s
-arrow from Y.nw to P.s
+arrow from X.s to P.n
+arrow from Y.n to P.s
 .PE
 .NH 2
 Melody Generator
@@ -575,19 +567,17 @@ The melody generator is a program which takes as input as set of chords and
 produces a melody for each one which would work played concurrently with that
 chord. In addition to a set of chords as input, it takes the length of the
 melody to be generated and a seed value for randomness.
-.DS C
-Figure 5
-.DE
 .PS
+F: box "Figure 5: melody generator functionality" invis at (1, 1)
 A: box "chord set" invis wid 0.7 at (-0.5, 0)
 P: box "melody generator" wid 1 at (1, 0)
 B: box "melody set" invis wid 0.7 at (2.5, 0)
-X: box "length" invis ht 0.3 wid 0.2 at (0.5, -0.75)
-Y: box "seed" invis ht 0.3 wid 0.2 at (1.5, -1)
+X: box "length" invis ht 0.3 wid 0.2 at (1, 0.75)
+Y: box "seed" invis ht 0.3 wid 0.2 at (1, -0.75)
 arrow from A.e to P.w
 arrow from P.e to B.w
-arrow from X.ne to P.s
-arrow from Y.nw to P.s
+arrow from X.s to P.n
+arrow from Y.n to P.s
 .PE
 .NH 2
 Melody Harmoniser
@@ -596,10 +586,8 @@ The melody harmoniser takes a set of melodies as input and for each one
 writes 3 part harmony for it to the output set of harmonised melodies.
 Each 3-part harmony has the melody in the highest pitch line, with 2 accompanying
 lines beneath it in pitch.
-.DS C
-Figure 6
-.DE
 .PS
+F: box "Figure 6: melody harmoniser functionality" invis at (1, 0.5)
 A: box "melody set" invis wid 0.7 at (-1, 0)
 P: box "melody harmoniser" wid 1.2 at (1, 0)
 B: box "harmonised-melody set" invis wid 1.5 at (3, 0)
@@ -614,10 +602,8 @@ containing each one after the other, represented using MusicXML
 .[ (
 musicxml01
 .]).
-.DS C
-Figure 7
-.DE
 .PS
+F: box "Figure 7: melody harmoniser functionality" invis at (1, 0.5)
 A: box "harmonised melody set" invis wid 1.5 at (-1, 0)
 P: box "musicxml formatter" wid 1.2 at (1, 0)
 B: box "musicxml data" invis wid 1 at (3, 0)
@@ -634,33 +620,117 @@ these draw alternate representations of modes in the terminal for the user to
 read.
 There is one to display modes on a guitar fretboard and one to display them
 on a stave using traditional key signature notation.
-.DS C
-Figure 8
-.DE
 .PS
+F: box "Figure 8: fretboard formatter functionality" invis at (1,0.5)
 A: box "mode set" invis wid 0.7 at (-1, 0)
 P: box "fretboard formatter" wid 1.2 at (1, 0)
 B: box "fretboard display" invis wid 1 at (3, 0)
 arrow from A.e to P.w
 arrow from P.e to B.w
 .PE
-.DS C
-Figure 9
-.DE
 .PS
+F: box "Figure 9: stave formatter functionality" invis at (1, 0.5)
 A: box "mode set" invis wid 0.7 at (-1, 0)
 P: box "stave formatter" wid 1.2 at (1, 0)
 B: box "stave display" invis wid 1 at (3, 0)
 arrow from A.e to P.w
 arrow from P.e to B.w
 .PE
+.NH 2
+Component Combinations
+.LP
+Although each component program provides useful functionality alone, it is the
+compatability between them which is the main asset of this design.
+Various permuations of the programs can be used to produce different results.
+.PP
+Figure 10 shows a particularly long pipeline beginning with generating a set of 
+modes and ending with a set of harmonised melodies represented in MusixXML 
+format. The number of harmonies in the output will be the same as the number of 
+chords outputted from the chord builder because for each of the programs 
+between them there is one member in the output set generated from each 
+member of the input set. 
+.PS
+F: box "Figure 10: from modes to harmonies" invis at (2.25, 1.1)
+A: box "mode" "generator" wid 0.6 at (0, 0)
+B: box "interval" "filter" wid 0.6 at (0.75, 0)
+C: box "chord" "builder" wid 0.6 at (1.5,0)
+D: box "melody" "generator" wid 0.6 at (2.25,0)
+E: box "melody" "harmoniser" wid 0.7 at (3.1,0)
+F: box "musicxml" "formatter" wid 0.6 at (3.9,0)
+arrow from A.e to B.w
+arrow from B.e to C.w
+arrow from C.e to D.w
+arrow from D.e to E.w
+arrow from E.e to F.w
+I: box "mode" "set*" invis wid 0.3 at (-0.75, 0)
+O: box "MusicXML" "harmonies" invis wid 0.6 at (4.65, 0)
+arrow from I.e to A.w
+arrow from F.e to O.w
+P: box "note" "set" invis wid 0.5 at (0, -0.75)
+Q: box "interval" "set" invis wid 0.6 at (0.75, -0.75)
+R: box "root" "degree" invis wid 0.5 at (1.5, 0.75)
+S: box "extensions*" invis wid 0.5 ht 0.2 at (1.5, -0.75)
+T: box "length" invis wid 0.4 ht 0.2 at (2.25, 0.75)
+U: box "seed" invis wid 0.3 ht 0.2 at (2.25, -0.75)
+arrow from P.n to A.s
+arrow from Q.n to B.s
+arrow from R.s to C.n
+arrow from S.n to C.s
+arrow from T.s to D.n
+arrow from U.n to D.s
+.PE
+.PP
+A user may choose to build up such a pipeline incrementally by first only only
+using the mode generator, analysing the output and then deciding to append
+the interval filter to the pipeline, thereby removing modes which do not meet their
+criteria. Once satisfied, they could examine the chord of a given nature for
+each of these modes using the chord builder and then if they wish append the
+melody generator to produce a melody to work over each of the chords built.
+From here it would be simple to append the harmoniser and MusicXML formatter
+to the pipeline and redirect the output to a file using the standard
+.CW >
+Unix operator.
+MusicXML files can be opened in a variety of scorewriters, such as Musescore 
+.[ (
+musescore15
+.]),
+which offer playback
+functionality, allowing the harmonies to be listened to and edited in other
+programs.
+.PP
+It is important to note that the pipeline could end with any of the programs
+and the output could be redirected to a file by the user. This may be satisfactory
+and the end of the users interaction with the system, or they may wish to use
+the file later to input into another pipeline build using the components of 
+the system.
+Not only this, but the user may wish to manually write musical data to files
+and then input them into a pipeline. The transmission language used by the system
+has deliberately been kept as simple as possible to make this easier for users.
+.PP
+The following table lists the STDIN input and STDOUT output types for each
+of the component programs. If a program Y has input type of A and and
+a program X has output type of A then X can be piped into Y.
+.TS
+center;
+c c c .
+Program	Input Type	Output Type
+_
+Mode generator	Mode set	Mode set
+Interval filter	Mode set	Mode set
+Chord builder	Mode set	Chord set
+Melody generator	Chord set	Melody set
+Melody harmoniser	Melody set	Harmonised melody set
+MusicXML formatter	Harmonised melody set	MusicXML
+Stave formatter	Mode set	Stave display
+Fretboard formtatter	Mode set	Fretboard display
+.TE
 .NH 1
 Implementation
 .XS
 Implementation
 .XE
 .LP
-Just use pseudocode and hand drawn diagrams
+Focus on pseudocode and diagrams
 .NH 2
 Common Data Types
 .NH 2
