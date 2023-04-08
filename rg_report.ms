@@ -34,6 +34,25 @@ IRCAM	Institut de recherche et coordination acoustique/musique
 LSEPI	Laws, social, ethical and professional issues
 MIT	Massachusetts Institute of Technology
 .TE
+.SH 1
+Music Glossary
+.LP
+.TS
+l l .
+Pitch	A value used to represent how high or low a note sounds
+Scale	A circular sequence of intervals and optionally a starting pitch
+Mode	A scale with a specific interval treated as the first
+Melody	A line either played alone or higher in pitch than all other concurrent parts
+Harmony	The interaction between notes played concurrently
+Chord	A set of notes played concurrently
+Tonality	The mode or scale which the melody and harmony is built from
+Line	A sequence single notes
+Degree	Ordinal representing where a pitch lies in a given scale
+Natural	Unaltered pitch
+Sharp	Pitch raised by one semitone
+Flat	Pitch lowered by one semitone
+Interval	Difference between 2 pitches, often described as a degree
+.TE
 .bp
 .NH 1
 Introduction
@@ -423,6 +442,22 @@ basic grasp of western music theory.
 Traditionally, there are 12 tones used to represent pitch. 
 Using sharps to represent accidentals, the twelve tones are C, C#, D, D#, E, 
 F, F#, G, G#, A, A# and B.
+.IP
+Tonality
+.IP
+Mode
+.IP
+Scale
+.IP
+Chord
+.IP
+Harmony
+.IP
+Melody
+.IP
+Line
+.IP
+Voice
 .NH 2
 Algorithms
 .NH 3
