@@ -46,7 +46,7 @@ Melody	A line either played alone or higher in pitch than all other concurrent p
 Harmony	The interaction between notes played concurrently
 Chord	A set of notes played concurrently
 Tonality	The mode or scale which the melody and harmony is built from primarily
-Key	Synonymous with tonality for our purposes
+Key	Representation of tonality for practical interpretation
 Line	A sequence of single notes
 Degree	Ordinal representing where a pitch lies in a given scale
 Natural	Unaltered pitch
@@ -434,7 +434,6 @@ Continuing with the theme of Unix style and `New Jersey' style, I will write
 the software in C.
 This is also to make the software as portable as possible between the 
 various Unix-like operating systems.
-.ds CH
 .NH 2
 Music Theory
 .LP
@@ -472,7 +471,6 @@ melody10
 Harmony Generation
 .IP
 depth first search
-.bp
 .NH 1
 Design
 .XS
@@ -1015,7 +1013,7 @@ readers for musicxml and abc
 .[
 unixabc13
 .]
-
+.ds CH
 .bp
 .TC
 .bp
