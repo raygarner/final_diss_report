@@ -4,8 +4,8 @@ all: $(TITLE).ms
 	refer -e -S -sA -p ~/docs/roff/bib $(TITLE).ms | \
 		groff -ms -e -t -p -Tps > $(TITLE).ps
 	ps2pdf $(TITLE).ps temp.pdf
-	pdftk temp.pdf cat 1-2 r2 3-r3 r1 output $(TITLE).pdf
-	rm temp.pdf
+	pdftk temp.pdf cat 1-2 r3 3-r4 r2-r1 output $(TITLE).pdf
+	#rm temp.pdf
 
 wc: $(TITLE).ms
 	refer -p ~/docs/roff/bib $(TITLE).ms | groff -e -t -p -ms -a | \

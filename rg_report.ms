@@ -1,4 +1,4 @@
-\# .ds DY
+.ds DY
 .RP no
 .TL
 Unix Style Computer Aided Composition
@@ -756,6 +756,8 @@ Evaluation
 .XS
 Evaluation
 .XE
+.NH 2
+Methodology
 .LP
 For effective testing and evaluation of the system a 
 quantitative method of output analysis must be established.
@@ -791,10 +793,170 @@ The results from this experiment provide a good benchmark for the frequency
 of notes in music.
 That is, the frequency of notes in melodies which listeners find satisfying 
 will roughly match the results of the `probe tone' experiment.
-.PSPIC -C img/eval/chord_freq.eps
-.PSPIC -C img/eval/chord_trans_freq.eps
+.PP
+With these ideas in mind, we can start to apply similar methods to existing
+compositions and build a picture to which we can compare analysis
+of the output of this project against. `Music21'
+.[
+music21
+.]
+is a Python module which provides a framework for musicology.
+As well as providing a rich toolkit for the analysis of music, it also
+has a built in corpus of roughly 3000 pieces comprised of popular folk songs
+and works by over 20 iconic classical composers from varying eras.
+To create a benchmark to compare the output of my system to, I will apply
+the aforementioned music analysis techniques to the Music21 corpus using the
+functions it provides.
+.NH 2
+Melody
+.LP
+To evaluate the musicality of melodic ideas generated using our system, we
+compared output from the melody generator to data in the ``Essen Folksong Collection''
+.[ (
+essen87
+.]),
+which is included in the Music21 corpus.
+Folksongs are quintessentially melodic; they propagated through societies and
+gained cultural significance not because populations learned the chord progressions
+but simply because the melodies where `catchy' to the ear.
+Explained more concretely, there structure agrees with the findings of the
+aforementioned `probe tone' experiement which found that listeners consider
+melodic phrases to sound more `complete' when they end on specific notes of
+the scale (notes in the tonic triad).
+It follows then that if we use as input to the melody generator the tonic
+triad of a scale, the melodic output will have similar characteristics to
+folksongs.
+Conveniently, the Essen Folksong Collection is encoded in ABC format
+.[ (
+abcmusic
+.]),
+which focuses primary on representing the main melody line of the music while
+additionally providing the tonality of the piece (the musical mode it is built 
+from).
+.PP
+To test this theory, I produced 100 6-note melodies (each with a different seed value)
+using the melody generator and used Music21 to carry out frequency analysis on
+degrees of the scale in the melody. For example, if a C note is found in the
+key of C then the frequency of 1st degree notes has inreased by 1. If a D note
+is found in the key of C then the frequency of 2nd degree notes has increased
+by 1, and so on.
+Evaluating the frequency of degrees of the scale rather than of notes is
+much more useful because the degree of the scale it is built from represents
+the function of that note in its melodic context.
+This idea of scalic context being what gives a note its character to listeners
+is proven by the probe-tone experiement because they were only able to assign
+a `completeness' value to each note of the scale when it was preceded by stepwise
+ascension of the scale.
+Corresponding analysis was produced a subset of the Essen Folksong 
+Collection. The pieces in the Essen Folksong Colleciton use a variety of
+tonalities so the tonality information in the ABC encoding was used to
+convert notes to degrees of their respective scales.
+The following graph shows a comparison of the frequency analysis of my system compared 
+with that of the folksongs.
 .PSPIC -C img/eval/note_freq.eps
+As you can see, the notes of the tonic triad (1, 3 and 5) are the most common
+in both, which correleates with the results of the probe-tone experiment.
+However, the extent to which these notes are emphasised is higher in the output of our
+system. This is probably because the melodies were generated using a tonic
+triad as input. The emphasis of these notes could be made less prominent by
+passing extesnsions to the chord generator as arguments, but the level
+of emphasis played on the tonic triad notes in the example is acceptable.
+Alternatively, the ammount of randomness used in the generation of melodies
+could be increased to even out the distribution.
+.PP
+The next graph shows the same method analysis applied note transitions rather
+than notes. It is essential to analyse the frequency of transitions aswell
+as the frequency of individual notes to prove the musicality of the output
+of our system because it shows that the distribution of the note instances in
+the melody is satisfactory aswell as just the overall frequency.
+The frequencies are shown on matrices whereby the value at row N column M
+represents the frequency of N-M transitions. Lighter colours represent higher
+frequencies.
 .PSPIC -C img/eval/melody_note_trans_freq.eps
+This analysis shows that both sets of melodies have a tendancy to move stepwise,
+that is most transitions are to an adjacent note in mode used to build the
+melody.
+The analysis shows that our systems tends to produce a pattern-like and
+uniform melodies, which could be deemed as un-musical according to taste. 
+A simple way to rectify this would be to increase the ammount of randomness 
+used in the algorithm.
+Both sets also show to have high levels of transition symmetry. That is,
+the ammount of N-M transitions is similar to the ammount of M-N transitions.
+.NH 2
+Harmony
+.LP
+Harmonic analysis was performed by comparing output from the melody harmoniser
+to a subset of the Music21 Bach corpus.
+As in ``Statistical Properties of Tonal Harmony in Bachs Chorales'', 
+.[
+bach08
+.]
+the music of Bach has been selected due to its consistent style and overwhelming
+popularity. Additionally, the principle of taking a single line melody and adding
+additional voices beneath it in pitch to create harmony was popularised by his
+working applying this technique to hymn tunes and it is this principle which
+the melody harmoniser applies. The techniques I used to analyse harmony are
+simliar to those used to analyse melody, except instead of converting notes
+to scale degrees, chords are converted to scale degrees. The scale degree a
+chord maps to is the scale degree of its root note.
+The Essen Folksong Corpus would have been a poor choice for comparison because
+the pieces lack the harmonic depth which Bach provides and also the ABC format
+cannot accurately represent multiline harmonies such as what Bach and the output
+of the melody harmoniser deal in.
+As with the melodic analysis, I used our system to generate 100 6-note melodies
+but then piped them into the melody harmoniser and then into the musicxml 
+formatter.
+The Music21 Bach corpus is also encoded using MusicXML which means we can use
+the Music21 MusicXML `chordify' function on our data aswell as the Bach corpus
+to convert them to a list of chords.
+Bach's music changes key often (the mode used to generate the music can change
+to a different one during a piece) so this must be considered when converting
+the chords to scale degrees. Thankfully, Music21 provides functionality to
+re-analyse the key frequently at any point during the MusicXML data, which allows
+us to accurately perform frequency analysis on the scale degerees of the chords used.
+The following graph compares the frequency of chords in Bachs compositions and
+the output of the melody harmoniser.
+.PSPIC -C img/eval/chord_freq.eps
+In music theory, chords 1, 4 and 5 are considered the primary chords and have
+particular importance.
+.[ (
+abtheory1
+.]),
+so it follows that they should be the most frequent in music adhering to a
+fundamental style.
+The analysis shows that this is the case for the output of our melody 
+harmoniser and that it is the case for the Bach, apart from he seems to
+emphasise chord 2.
+The emphasis on chord 2 could be due to Bach's heavy usage of the 2-5-1
+progression in his music, which is a staple of Baroque era music
+.[ (
+westmusic99
+.]).
+.PP
+As with the melody analysis, it is essential to examine the frequency of
+transitions aswell of individual chords to ensure the distribution is also
+accurate. The next graph presents chord transition data the same way as was
+done for melody note transitions.
+.PSPIC -C img/eval/chord_trans_freq.eps
+In music a `cadence' refers to a chord transition at the end of a phrase
+and the most fundamental cadences are the `perfect cadence' (5-1), `plagal
+cadence' (4-1) and `imperfect cadence' (1-5)
+.[ (
+abtheory1
+.]).
+It is satisfying then that these transitions are shown to be the most common
+in the output of the melody harmoniser.
+The Bach analysis shows some emphasis towards the primary cadences, however
+not as much as I expected, with a distinct lack of 4-1 transitions.
+This could be due to the algorithm which Music21 uses to `chordify' the 
+MusicXML representations misinterpreting some instances of chord 4 as chord 1
+(they both have the first degree of the scale as a note). The MusicXML for
+the Bach works is far more complex than the MusicXML for my harmonised melodies
+so its possible this is causing some complications for the chordify algorithm.
+Nonetheless, the correlation between the harmonied melodies produced by my system,
+Bach works and fundamental music theory is strong enough to be acceptable
+in my opinion as subjective factors such as `taste' and `style' mean this kind 
+of analysis is not an exact science.
 .NH 1
 Summary
 .XS
@@ -804,6 +966,20 @@ Summary
 Project Management
 .NH 2
 Contributions and Reflections
+.NH 2
+Future Extensions
+.IP
+Parameterise the ammount of voices for hrm
+.IP
+chord identifier
+.IP
+melody generator arg to switch argv and stdin input types
+.IP
+readers for musicxml and abc
+.[
+unixabc13
+.]
+
 .bp
 .TC
 .bp
