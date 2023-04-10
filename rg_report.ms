@@ -40,19 +40,19 @@ Music Glossary
 .TS
 l l .
 Pitch	A value used to represent how high or low a note sounds
+Interval	Difference between 2 pitches
 Scale	A circular sequence of intervals and optionally a starting pitch
+Degree	Ordinal representing where a pitch lies in a given scale. Also used to describe intervals
 Mode	A scale with a specific interval treated as the first
 Melody	A line either played alone or higher in pitch than all other concurrent parts
-Harmony	The interaction between notes played concurrently
-Chord	A set of notes played concurrently
+Chord	Two or more notes played concurrently
+Harmony	The combination of notes in a sequence of 1 or more chords
 Tonality	The mode or scale which the melody and harmony is built from primarily
 Key	Representation of tonality for practical interpretation
 Line	A sequence of single notes
-Degree	Ordinal representing where a pitch lies in a given scale
 Natural	Unaltered pitch
 Sharp	Pitch raised by one semitone
 Flat	Pitch lowered by one semitone
-Interval	Difference between 2 pitches, often described as a degree
 .TE
 .bp
 .NH 1
@@ -439,25 +439,96 @@ Music Theory
 .LP
 To understand the algorithms used in this project, it is essential to have a
 basic grasp of western music theory.
-Traditionally, there are 12 tones used to represent pitch. 
-Using sharps to represent accidentals, the twelve tones are C, C#, D, D#, E, 
-F, F#, G, G#, A, A# and B.
-.IP
-Tonality
-.IP
-Mode
-.IP
-Scale
-.IP
-Chord
-.IP
-Harmony
-.IP
-Melody
-.IP
-Line
-.IP
-Voice
+In this section I will describe the core aspects of music theory which this
+project primarily deals in: melody, chords and modes.
+If at any point you are unsure the meaning of a musical term, please refer to
+the music glossary at the beginning of this document.
+Some useful further reading if you desire it is ``The AB Guide to Music Theory''
+.[ (
+abtheory1
+.]).
+.PP
+Traditionally there are 12 tones used to represent pitch:
+C, C#, D, D#, E, F, F#, G, G#, A, A# and B (using only sharps and no flats to represent them).
+The interval between two adjacent tones in this sequence is known as a semitone
+and the interval between every other tone in
+this sequence known as a whole-tone.
+For example, C and D are a whole tone apart and C and C# are a semitone apart.
+.PP
+The most fundamental scale in western music is the major scale, which is a
+sequence of seven intervals: tone, tone, semitone, tone, tone, tone, semitone.
+Scales such as this can be given a root note (note to start on) to produce a
+set of notes which can be used to create music.
+For example, a major scale with a root of C (aka C major scale) contains the
+following notes: C, D, E, F, G, A and B because C is the first, a tone above C
+is D, a tone above D is E, a semitone above E is F, and so on (recall the
+sequence of intervals defining the major scale if this is not clear to you).
+Each pitch in a scale can be given an ordinal to represent its function within
+the scale and this is known as the degree of the scale which it is.
+For example, C is the first degree of the C major scale and D is the second,
+E is the third and so on. Each interval between each adjacent note in a scale
+is known as a `step' and the other various intervals between notes in the scale
+can be described in a similar way to how we use degrees. For example, E is a third 
+above C and A is a third above F. 
+.PP
+Bare in mind that not every step in the scale represents the same difference
+in pitch because some intervals of the scale are a tone and some are a semitone.
+This means that the difference in pitch between C and E is different to that
+of D and F. All `thirds' in the scale
+are either the same as the difference between the first degree and the third
+degree in the major scale intervals or of that in the minor scale intervals.
+Hence, thirds are always `major' or `minor'.
+Whether something is major or minor is an example of tonality, and when tonality
+is not explicitly stated it is assumed major is being refered to.
+.PP
+Once we have established what scale we are using, we can begin to build chords.
+The most fundamental chord struct is known as the triad which contains 3 notes:
+the first, third and fifth. For each note of the major scale there is a triad
+chord where it is the root. For example, chord 1 in the major scale is C, E
+and G. Chord 4 in the major scale is F, A and C. The following table describes
+the tonality of each chord in the major scale.
+.TS
+center;
+c c .
+Chord	Tonality
+_
+I	Major
+II	Minor
+III	Minor
+IV	Major
+V	Major
+VI	Minor
+VII	Diminished
+.TE
+Other than chord VII, the fifth in each of these chords is known as `perfect'.
+It is called a perfect fifth because the difference in pitch between the first 
+and fifth degrees is the same in the major and minor scales.
+Chord VII is special because it is the only one where the interval between
+its first and fifth is not that of the major scale, it is one semitone smaller.
+The third of chord VII is minor.
+.PP
+The major scale has 7 modes because a mode is defined by treating a specific
+degree as the first.
+The following table shows the modes of the major scale, where ``relativity''
+is the degree of the major scale treated as the first to define that mode.
+.TS
+center;
+c c c .
+Name	Relativity	Intervals
+_
+Ionian	1	TTSTTTS
+Dorian	2	TSTTTST
+Phrygian	3	STTTSTT
+Lydian	4	TTTSTTS
+Mixolydian	5	TTSTTST
+Aeolian	6	TSTTSTT
+Locrian	7	STTSTTT
+.TE
+Ionian is modal name for the major scale and Aeolian is the modal name for the
+minor scale. These 2 modes are by far the most common in western pop music but
+others are used more frequently in different genres and styles.
+To help understand the relativity of the modes, consider why C Ionian contains
+all of the same notes as A Aeolian.
 .NH 2
 Algorithms
 .NH 3
