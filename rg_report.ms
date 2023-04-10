@@ -890,8 +890,75 @@ Implementation
 Focus on pseudocode and diagrams
 .NH 2
 Common Data Types
+.LP
+.TS
+center;
+c c .
+Data	Encoding
+_
+Pitch	Int
+Interval	Int
+Degeree	Int
+Scale	\[ci][Interval]
+Mode	(Scale, Degree)
+Root	Pitch
+Key	(Root, Mode)
+Chord	[Pitch]
+Line	[Pitch]
+Harmony	[[Pitch]]
+Alteration	Int
+.TE
 .NH 2
 Common Functions
+.NH 3
+Input/Output
+.LP
+.TS
+center;
+l lx .
+Function	Description
+_
+read_accidental(a)	Return encoded alteration a
+read_note(p)	Return encoded natural pitch p
+read_tone(p, a)	Return encoded pitch p with alteration a
+read_mode(m)	Return encoded mode m
+init_key_field(k, i)	T{
+Initialise all cells of M\[mu]N matrix k with value i where M is number of pitches and N is number of major scale modes
+T}
+read_key_list(k, x)	For each key(root, mode) read from STDIN set k[root][mode] to x
+print_matching_keys(k, x)	For each k[root][mode] equal to x print key(root, mode)
+is_accidental(p)	Returns true if the decoding of p requires a sharp or flat else returns false
+is_correct_accidental(k, a)	Returns true if the decoding of key k can be represented using accidental a
+get_correct_accidental(k)	Returns an accidental which the decoding of key k can be written using
+print_note(a, p)	Print decoding of pitch p using accidental a
+.TE
+.NH 3
+Internal
+.LP
+.TS
+center;
+l lx .
+Function	Description
+_
+clock_mod(x, m)	T{
+Returns a member of {0..m} congruent to x where x may be positive or negative
+T}
+step(d, k)	T{
+Returns the pitch one step up from degree in key
+T}
+calc_degree(p, k)	T{
+Returns the degree of pitch p in the context of key k
+T}
+is_diatonic(p, k)	T{
+Returns true if pitch p is in key k, false otherwise
+T}
+apply_steps(d, k, s)	T{
+Returns the pitch s steps from degree d in key k where s may be positive or negative
+T}
+min_tone_diff(p, q)	T{
+Returns the minimum pitch difference between pitches p and q in semitones
+T}
+.TE
 .NH 2
 Mode Set Building
 .NH 2
