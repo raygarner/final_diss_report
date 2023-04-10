@@ -482,7 +482,7 @@ Whether something is major or minor is an example of tonality, and when tonality
 is not explicitly stated it is assumed major is being refered to.
 .PP
 Once we have established what scale we are using, we can begin to build chords.
-The most fundamental chord struct is known as the triad which contains 3 notes:
+The most fundamental chord structure is known as the triad which contains 3 notes:
 the first, third and fifth. For each note of the major scale there is a triad
 chord where it is the root. For example, chord 1 in the major scale is C, E
 and G. Chord 4 in the major scale is F, A and C. The following table describes
@@ -524,7 +524,7 @@ Mixolydian	5	TTSTTST
 Aeolian	6	TSTTSTT
 Locrian	7	STTSTTT
 .TE
-Ionian is modal name for the major scale and Aeolian is the modal name for the
+Ionian is the modal name for the major scale and Aeolian is the modal name for the
 minor scale. These 2 modes are by far the most common in western pop music but
 others are used more frequently in different genres and styles.
 To help understand the relativity of the modes, consider why C Ionian contains
@@ -533,15 +533,67 @@ all of the same notes as A Aeolian.
 Algorithms
 .NH 3
 Melody Generation
-.IP
-chord based generation (build skeleton melody then fill out)
+.LP
+``Melody Generator: A Device for Algorithmic Music Construction'' 
 .[
 melody10
 .]
+discusses some ideas for algorithmic melody generation.
+One of these it calls the ``Chord-Based Model'' and it fundamentally works by 
+using a chord
+as a template for melody construction. Notes within the chord are placed on
+`strong' beats in the rhythm to create a `skeleton melody' and notes of the 
+scale are used to connect them to create the final melody. 
+This simple technique serves as an ideal basis for a program within our system
+which could be passed a chord as input and produce as melody as output.
+Such input and output types are ideal for a program designed to sit in a pipeline
+of others such as ours.
 .NH 3
 Harmony Generation
+.LP
+Harmonising Bach chorales is a common exercise for music students, whereby they
+are given a melody line and tasked with adding 3 additional lines beneath it
+in pitch to produce a satisfying piece of music.
+``Bach in a box''
+.[
+bach94
+.]
+attempts to automate this process by producing a large amount of potential
+solutions and evaluating them on criteria established by musicology.
+This criteria is standard for Bach chorales and includes smoothness, range
+and motion.
+ChoraleGUIDE
+.[
+choraleguide
+.]
+is a popular resource for undergraduate and A Level music students looking to
+improve their chorale harmonisation skills.
+The algorithm I implemented for the harmony generating aspect of the system
+is based on the method outlined by Pankhurst:
 .IP
-depth first search
+add simple bassline beneath melody
+.IP
+modify bassline to boost its evaluation against certain criteria
+.IP
+fill in middle part
+.LP
+A depth-first search is carried out in the bassline improvement step to find
+the solution which best satisfies the criteria he proposes for the bassline
+including:
+.IP
+balance of steps and leaps
+.IP
+no consecutive leaps in same direction
+.IP
+no repeated notes
+.IP
+not too similar to melody line
+.IP
+no `sirening' (up-down-up-down stepwise repetition)
+.LP
+Techniques he suggests to best avoid these are to modify the bassline line by
+inverting the chords, using a different chord or both (hence why each node has
+up to three children in the search tree).
 .NH 1
 Design
 .XS
