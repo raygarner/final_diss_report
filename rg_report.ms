@@ -406,35 +406,6 @@ Methodology
 Methodology
 .XE
 .NH 2
-Technologies
-.LP
-Since this project is about exploring the effectiveness of applying Unix philosophy to
-computer aided composition, the software will target Unix based platforms.
-These include operating systems based on Linux, Hurd and BSD.
-The basic requirement for the platform is that is provides Unix pipes for the
-programs to communicate with.
-.PP
-The language with the most portability across Unix-like platforms is C.
-Like Unix, C is strongly associated with the `New Jersey' philosophy
-.[ (
-worseisbetter91
-.]).
-According to Gabriel it was `designed using the New Jersey approach' and 
-`designed for writing Unix'.
-He attributes its popularity to its simplicity because it makes C 
-compilers easier to develop.
-As mentioned in the `Program Design in the UNIX Environment'
-.[ (
-unix84
-.]),
-C was originally the language for the Unix kernel and applications and
-`essentially everything was written in C', which made the software easy to
-modify and customise.
-Continuing with the theme of Unix style and `New Jersey' style, I will write
-the software in C.
-This is also to make the software as portable as possible between the 
-various Unix-like operating systems.
-.NH 2
 Music Theory
 .LP
 To understand the algorithms used in this project, it is essential to have a
@@ -886,8 +857,35 @@ Implementation
 .XS
 Implementation
 .XE
+.NH 2
+Technologies
 .LP
-Focus on pseudocode and diagrams
+Since this project is about exploring the effectiveness of applying Unix philosophy to
+computer aided composition, the software targets Unix based platforms.
+These include operating systems based on Linux, Hurd and BSD.
+The basic requirement for the platform is that is provides Unix pipes for the
+programs to communicate with.
+.PP
+The language with the most portability across Unix-like platforms is C.
+Like Unix, C is strongly associated with the `New Jersey' philosophy
+.[ (
+worseisbetter91
+.]).
+According to Gabriel it was `designed using the New Jersey approach' and 
+`designed for writing Unix'.
+He attributes its popularity to its simplicity because it makes C 
+compilers easier to develop.
+As mentioned in the `Program Design in the UNIX Environment'
+.[ (
+unix84
+.]),
+C was originally the language for the Unix kernel and applications and
+`essentially everything was written in C', which made the software easy to
+modify and customise.
+Continuing with the theme of Unix style and `New Jersey' style, I wrote
+the software in C.
+This also helps make the software as portable as possible between the various
+Unix-like operating systems.
 .NH 2
 Common Data Types
 .LP
@@ -961,8 +959,35 @@ T}
 .TE
 .NH 2
 Mode Set Building
+.LP
+.TS
+center;
+l lx .
+Function	Description
+_
+check_relative_modes(r, k)	T{
+For all k[root][mode] in matrix k which are relative to key r, increment the cell value
+T}
+process_notes(n, k)	T{
+For each pitch in list n call check_relative_modes(key(note,m), k) for each mode m
+T}
+.TE
 .NH 2
 Mode Set Filtering
+.LP
+.TS
+center;
+l lx .
+Function	Description
+_
+degree_val(d, m)	T{
+Return the interval between the first and degree d in mode m of the major scale in semitones
+T}
+correct_alteration(d, m, a)	T{
+Returns true if the interval between the first and degree d in mode m is different to the
+corresponding interval in the major scale
+T}
+.TE
 .NH 2
 Chord Building
 .NH 2
