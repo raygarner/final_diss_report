@@ -889,6 +889,60 @@ Unix-like operating systems.
 .NH 2
 Common Data Types
 .LP
+There are a number of data types used by the programs which make up the overall
+system. The goal of the encoding method is to represent musical data in a way
+which is simple for a computer to interpret and manipulate but also simple to
+encode and decode when reading input or writing output. 
+.PP
+``Bach in a box''
+.[
+bach94
+.]
+chooses to represent pitch using integers but in such a way that each integer
+maps to a pitch in the C major scale. For example, 0 represents C, 1 represents
+D, 2 represents E and so on. The advantage of this method is that programming
+the internal logic for building chords, melodies and harmonies becomes simpler
+because to go up a step within the mode you can just add 1 to a number, to
+go up a fifth in the step you can just add 4 to the value and so on.
+However, the problem with this encodiing method is that if you wish to work in
+any mode other than C major (C Ionian) then transposition is required when
+encoding/decoding takes place. Additionally, it is impossible to
+produce music using more pitches that what can be found in a single mode (chromaticism).
+This method is unsuitable for our usage because the pipeline design of our 
+system places high importance on the simplicity and efficiency of reading and writing data.
+Encoding data this way would also mean that future extensions implementing
+chromaticism would be made more difficult.
+Encoding data this way would also reject the extensibility objective of the project
+by making the implementation of chromaticism more difficult.
+.PP
+Our pitch encoding method is simlilar to that of MIDI, stemming from USI
+.[ (
+usi81
+.]), 
+whereby all 12 tones are
+accounted for and the interval between any 2 adjacent integers is 1 semitone.
+This means that the fundamental encoding and decoding of each note is simple
+and can be done without knowledge of a tonal context, which is particularly 
+useful for the mode generator.
+Additionally this representation means that it is no harder to program 
+functionality using chromaticism or modes other than C major than it
+is to program functions working entirely within the confines of C major.
+To implement scales on top of this we represent a whole tone as the integer 2,
+a semitone as the integer 1 and the major scale as a circular list comprising of these
+types.
+It follow then that modes of the major scale can then be intuitively derived by treating different
+elements in the list as the first.
+This encoding opens up an interesting avenue for future exploration: using
+a different set of intervals as the base scale to derive modes from.
+Although not used in popular music, alternate modes such as ``The modes of limited
+transposition''
+.[
+messiaen76
+.]
+are of interest in the field of musicology and could be easily implemented into
+our system.
+.PP
+The following table shows the types used to encode musical data in this project.
 .TS
 center;
 c c .
@@ -896,7 +950,7 @@ Data	Encoding
 _
 Pitch	Int
 Interval	Int
-Degeree	Int
+Degree	Int
 Scale	\[ci][Interval]
 Mode	(Scale, Degree)
 Root	Pitch
@@ -911,6 +965,70 @@ Common Functions
 .NH 3
 Input/Output
 .LP
+todo: explain pitch spelling, refer to papers
+.LP
+Input and output functions play an imporant role in the working of the system
+because they are what allow the component programs to be combined to provide
+different operations.
+.PP
+The function to encode a note is surjective but not injective which means that every 
+internal integer used to represent pitch has at least one string such as `C'
+which maps to it but some have two as, for exampe, C# and Db will map to the same
+internal representation because they have the same pitch.
+The nature of the decoding function depends on the mode of the data being 
+decoded as, 
+for example, the pitch represented internally by the integer 1 may be outputted
+as C# or Db.
+In traditional music representation, each key signature is written using either
+entirely sharps or entirely flats and if it a key signature contains
+C# then it cannot contain a C natural. However, if the key signature 
+contained a Db it would mean that there is no D natural in the key signature
+(but there could be a C natural). This means that some key signatures must be
+written using sharps and others must be written using flats else double
+sharps or double flats would be necessary to accurately describe it.
+In computer science this is known as the problem of `pitch spelling' and
+powerful algorithms such as `ps13'
+.[
+ps1306
+.]
+have been developed to solve it accurately even when the
+mode context is not known.
+The design of our system keeps track of the mode context so such complicated
+algorithms are not necessary but some work is still required to produce valid
+output.
+Our pitch spelling algorithm basically checks whether the current mode should
+be written using sharps or flats and then uses whichever accidental is correct
+for that to write non-natural notes with.
+The following shows a high level representation of the function used to check
+if a key can be represented with a given accidental where accidental is either
+sharp or flat:
+.DS
+.ft C
+is_correct_accidental(key, accidental)
+	if key is one of the few which can be written with either
+		return true
+	if accidental is flat then dir <- 1 else dir <- -1
+	for each pitch in key
+		if pitch is non-natural and
+		pitch + dir is in key and 
+		pitch + dir*2 is accidental
+			return false
+	return true
+		
+.ft
+.DE
+The idea here is two iterate through pitches in the key and check that if there
+is, for example, a Db in the key there is not also a D natural.
+We must check an extra pitch in the same direction direction though to avoid
+false negatives in cases such as when there is a Bb and Cb because Cb has the
+same pitch as B natural.
+We must also check that the next pitch in the same direction is accidental before
+saying its invalid else we would produce false negatives in such cases as when
+there is a Bb and a Cb in the key (because Cb and B natural have the same pitch
+so the integer encoding could mean that there is a Bb and B natural).
+.PP
+The following lists the various input and output functions shared by the different
+programs in the system:
 .TS
 center;
 l lx .
@@ -1037,6 +1155,30 @@ generate_bass_line(m, k)	T{
 Returns a simple bass line to work with melody line m in key k
 T}
 .TE
+.DS
+#define DEGREES 7
+#define NOTES   12
+#define EMPTY   -1
+
+enum Interval {
+	H = 1,
+	W = 2
+};
+
+const int IONIAN[DEGREES] = {W, W, H, W, W, W, H};
+
+void
+fill_notes(int notes[NOTES], int start, int m)
+{
+	int n = (start - 1) % NOTES, d = 0;
+
+	while (notes[n] == EMPTY) {
+		notes[n] = d;
+		n = (n + IONIAN[(d + m) % DEGREES]) % NOTES;
+		d = (d + 1) % DEGREES;
+	}
+}
+.DE
 .NH 2
 Conversion to MusicXML
 .LP
