@@ -1,5 +1,7 @@
 .ds DY
 .RP no
+.nr f -1 1
+.nr t 0 1
 .TL
 Unix Style Computer Aided Composition
 .AU
@@ -54,12 +56,63 @@ Natural	Unaltered pitch
 Sharp	Pitch raised by one semitone
 Flat	Pitch lowered by one semitone
 .TE
+.SH 1
+List of Tables
+.LP
+.TS
+l l .
+1	How this project combines elements of existing works
+2	Chord tonality in the major scale
+3	Modes of the major scale
+4	Input and output types of the component programs
+5	Musical data encoding in our system
+6	Common input and output functions
+7	Common internal logic functions
+8	Mode generating functions
+9	Interval filter functions
+10	Melody generation functions
+11	Melody harmonisation functions
+12	MusicXML writing functions
+13	TUI key signature functions
+14	TUI fretboard functions
+.TE
+.SH 1
+List of Figures
+.LP
+.TS
+l lx .
+1	Example program functionality
+2	Mode generator functionality graphic representation
+3	Interval filter functionality graphic representation
+4	Chord builder functionality graphic representation
+5	Melody generator functionality graphic representation
+6	Melody harmoniser functionality graphic representation
+7	MusicXML generator functionality graphic representation
+8	Fretboard formatter functionality graphic representation
+9	Stave formatter functionality graphic representation
+10	Full pipeline from modes to harmonies graphic representation
+11	T{
+Pseudocode for determining whether a given accidental is the correct one for writing a given key signature with
+T}
+12	T{
+Pseudocode for appling a given positive or neg ative number of steps to a given degree of a given key and return the final pitch
+T}
+13	T{
+pseudocode showing how a list of all keys where each contains all of the notes given as input is returned
+T}
+M	Melody note frequency analysis and comparison
+n	Melody note transition frequency analysis and comparison
+p	Chord degree frequency analysis and comparison
+q	Chord degree transition frequency analysis and comparison
+.TE
 .bp
 .NH 1
 Introduction
 .XS
 Introduction
 .XE
+.NH 2
+Background
 .LP
 Computer aided composition is when a musician employs software tools to
 create music.
@@ -143,18 +196,15 @@ can be seen in
 .[(
 littlelangmusic
 .]).
-.NH 1
+.NH 2
 Motivation
-.XS
-Motivation
-.XE
 .LP
 The motivation for this project follows from the flaws in the Bellcore music
 tools and IRCAM tools.
 These tools share many similarities and what one fails at, the other tends to succeed at.
 As shown in table 1, this project attempts to combine the successes of both of these systems.
 .DS C
-Table 1
+Table \n+t: How this project combines elements of existing works
 .DE
 .TS
 center;
@@ -203,6 +253,7 @@ programming language' of OpenMusic does.
 This project attempts to create a modern Unix style counterpart to OpenMusic,
 preserving the generality and expressiveness of its interface but implementing
 its functionality using traditional Unix methods.
+.bp
 .NH 1
 Aims and Objectives
 .XS
@@ -275,6 +326,7 @@ and end with the writing of data. Between these two points in time, no further
 data will be inputted to the program.
 This contrasts IRCAM solutions which are running constantly while a user works
 on them but is in line with the Bellcore approach.
+.bp
 .NH 1
 Literature Review
 .XS
@@ -400,6 +452,7 @@ tools such as OpenMusic do.
 This project attempts to fill this gap in the field and evaluate whether this
 style of development can lead to effective computer aided composition software
 being produced.
+.bp
 .NH 1
 Methodology
 .XS
@@ -458,6 +511,9 @@ the first, third and fifth. For each note of the major scale there is a triad
 chord where it is the root. For example, chord 1 in the major scale is C, E
 and G. Chord 4 in the major scale is F, A and C. The following table describes
 the tonality of each chord in the major scale.
+.DS C
+Table \n+t: Chord tonality in the major scale
+.DE
 .TS
 center;
 c c .
@@ -482,6 +538,10 @@ The major scale has 7 modes because a mode is defined by treating a specific
 degree as the first.
 The following table shows the modes of the major scale, where ``relativity''
 is the degree of the major scale treated as the first to define that mode.
+.DS C
+Table \n+t: Modes of the major scale shown with their intervals and what degree
+their first degree is in the major scale (relativity)
+.DE
 .TS
 center;
 c c c .
@@ -548,8 +608,15 @@ modify bassline to boost its evaluation against certain criteria
 .IP
 fill in middle part
 .LP
-A depth-first search is carried out in the bassline improvement step to find
-the solution which best satisfies the criteria he proposes for the bassline
+This same idea of first writing a simple bass line, carefully improving it
+according to criteria and then filling in the middle part accordingly is
+also described in another popular textbook ``Harmonising Bach Chorales''
+.[ (
+chorale18
+.]).
+.PP
+To implement this we do a depth-first search in the bassline improvement step to find
+the solution which best satisfies the criteria proposed in ChoraleGUIDE
 including:
 .IP
 balance of steps and leaps
@@ -561,10 +628,8 @@ no repeated notes
 not too similar to melody line
 .IP
 no `sirening' (up-down-up-down stepwise repetition)
-.LP
-Techniques he suggests to best avoid these are to modify the bassline line by
-inverting the chords, using a different chord or both (hence why each node has
-up to three children in the search tree).
+.PP
+.bp
 .NH 1
 Design
 .XS
@@ -578,7 +643,7 @@ functionality of our system into orthogonal programs. The following outlines
 how the system is broken down into building blocks which can be combined in
 various ways to produce output.
 .PS
-F: box "Figure 1: example program functionality" invis at (1, 1)
+F: box "Figure \n+f: example program functionality" invis at (1, -1)
 A: box "a" invis wid 0.3 at (0, 0)
 P: box "program" wid 1 at (1, 0)
 B: box "b" invis wid 0.3 at (2, 0)
@@ -589,7 +654,7 @@ arrow from P.e to B.w
 arrow from X.s to P.n
 arrow from Y.n to P.s
 .PE
-Figure 1 shows an example program in the format we use to represent the components
+Figure \nf shows an example program in the format we use to represent the components
 of our system.
 The program takes input of type
 .CW a
@@ -622,10 +687,10 @@ above { P(m) = \[fa]n\[mo]N:n\[mo]m }
 above { output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]}
 }
 .EN
-Figure 2 shows the functionality of the mode generator in terms of its input
+Figure \n+f shows the functionality of the mode generator in terms of its input
 and output types.
 .PS
-F: box "Figure 2: mode generator functionality" invis at (1,0.5)
+F: box "Figure \nf: mode generator functionality" invis at (1,-1)
 A: box "mode set*" invis 0.7 at (-0.5, 0)
 P: box "mode generator" wid 1 at (1, 0)
 B: box "mode set" invis wid 0.7 at (2.5, 0)
@@ -651,10 +716,10 @@ above { P(m) = \[fa]i\[mo]I:i\[mo]m }
 above { output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]}
 }
 .EN
-Figure 3 shows the functionality of the interval filter in terms of its input
+Figure \n+f shows the functionality of the interval filter in terms of its input
 and output types.
 .PS
-F: box "Figure 3: interval filter functionality" invis at (1,0.5)
+F: box "Figure \nf: interval filter functionality" invis at (1,-1)
 A: box "mode set*" invis 0.7 at (-0.5, 0)
 P: box "interval filter" wid 1 at (1, 0)
 B: box "mode set" invis wid 0.7 at (2.5, 0)
@@ -676,8 +741,11 @@ build them.
 As with the previously mentioned programs which take as input a mode set via
 .CW STDIN ,
 if no modes are supplied the set of all modes is used.
+.PP
+Figure \n+f shows the functionality of the chord builder in terms of its input
+and output types.
 .PS
-F: box "Figure 4: chord builder functionality" invis at (1,1)
+F: box "Figure \nf: chord builder functionality" invis at (1,-1)
 A: box "mode set*" invis wid 0.7 at (-0.5, 0)
 P: box "chord builder" wid 1 at (1, 0)
 B: box "chord set" invis wid 0.7 at (2.5, 0)
@@ -695,8 +763,9 @@ The melody generator is a program which takes as input as set of chords and
 produces a melody for each one which would work played concurrently with that
 chord. In addition to a set of chords as input, it takes the length of the
 melody to be generated and a seed value for randomness.
+.nr f +1
 .PS
-F: box "Figure 5: melody generator functionality" invis at (1, 1)
+F: box "Figure \nf: melody generator functionality" invis at (1, -1)
 A: box "chord set" invis wid 0.7 at (-0.5, 0)
 P: box "melody generator" wid 1 at (1, 0)
 B: box "melody set" invis wid 0.7 at (2.5, 0)
@@ -714,8 +783,9 @@ The melody harmoniser takes a set of melodies as input and for each one
 writes 3 part harmony for it to the output set of harmonised melodies.
 Each 3-part harmony has the melody in the highest pitch line, with 2 accompanying
 lines beneath it in pitch.
+.nr f +1
 .PS
-F: box "Figure 6: melody harmoniser functionality" invis at (1, 0.5)
+F: box "Figure \nf: melody harmoniser functionality" invis at (1, -0.5)
 A: box "melody set" invis wid 0.7 at (-1, 0)
 P: box "melody harmoniser" wid 1.2 at (1, 0)
 B: box "harmonised-melody set" invis wid 1.5 at (3, 0)
@@ -730,8 +800,9 @@ containing each one after the other, represented using MusicXML
 .[ (
 musicxml01
 .]).
+.nr f +1
 .PS
-F: box "Figure 7: melody harmoniser functionality" invis at (1, 0.5)
+F: box "Figure \nf: musicxml formatter functionality" invis at (1, -0.5)
 A: box "harmonised melody set" invis wid 1.5 at (-1, 0)
 P: box "musicxml formatter" wid 1.2 at (1, 0)
 B: box "musicxml data" invis wid 1 at (3, 0)
@@ -748,16 +819,18 @@ these draw alternate representations of modes in the terminal for the user to
 read.
 There is one to display modes on a guitar fretboard and one to display them
 on a stave using traditional key signature notation.
+.nr f +1
 .PS
-F: box "Figure 8: fretboard formatter functionality" invis at (1,0.5)
+F: box "Figure \nf: fretboard formatter functionality" invis at (1,-0.5)
 A: box "mode set" invis wid 0.7 at (-1, 0)
 P: box "fretboard formatter" wid 1.2 at (1, 0)
 B: box "fretboard display" invis wid 1 at (3, 0)
 arrow from A.e to P.w
 arrow from P.e to B.w
 .PE
+.nr f +1
 .PS
-F: box "Figure 9: stave formatter functionality" invis at (1, 0.5)
+F: box "Figure \nf: stave formatter functionality" invis at (1, -0.5)
 A: box "mode set" invis wid 0.7 at (-1, 0)
 P: box "stave formatter" wid 1.2 at (1, 0)
 B: box "stave display" invis wid 1 at (3, 0)
@@ -770,15 +843,16 @@ Component Combinations
 Although each component program provides useful functionality alone, it is the
 compatibility between them which is the main asset of this design.
 Various permutations of the programs can be used to produce different results.
+.nr f +1
 .PP
-Figure 10 shows a particularly long pipeline beginning with generating a set of 
+Figure \nf shows a particularly long pipeline beginning with generating a set of 
 modes and ending with a set of harmonised melodies represented in MusicXML 
 format. The number of harmonies in the output will be the same as the number of 
 chords outputted from the chord builder because for each of the programs 
 between them there is one member in the output set generated from each 
 member of the input set. 
 .PS
-F: box "Figure 10: from modes to harmonies" invis at (2.25, 1.1)
+F: box "Figure \nf: from modes to harmonies" invis at (2.25, -1.1)
 A: box "mode" "generator" wid 0.6 at (0, 0)
 B: box "interval" "filter" wid 0.6 at (0.75, 0)
 C: box "chord" "builder" wid 0.6 at (1.5,0)
@@ -838,6 +912,9 @@ has deliberately been kept as simple as possible to make this easier for users.
 The following table lists the STDIN input and STDOUT output types for each
 of the component programs. If a program Y has input type of A and and
 a program X has output type of A then X can be piped into Y.
+.DS C
+Table \n+t: Component programs shown with their input and output types
+.DE
 .TS
 center;
 c c c .
@@ -852,6 +929,7 @@ MusicXML formatter	Harmonised melody set	MusicXML
 Stave formatter	Mode set	Stave display
 Fretboard formatter	Mode set	Fretboard display
 .TE
+.bp
 .NH 1
 Implementation
 .XS
@@ -943,6 +1021,10 @@ are of interest in the field of musicology and could be easily implemented into
 our system.
 .PP
 The following table shows the types used to encode musical data in this project.
+.DS C
+Table \n+t: Musical data types and how they are encoded in our system. \[ci][x]
+represents a circular list of elements of type x
+.DE
 .TS
 center;
 c c .
@@ -999,6 +1081,7 @@ output.
 Our pitch spelling algorithm basically checks whether the current mode should
 be written using sharps or flats and then uses whichever accidental is correct
 for that to write non-natural notes with.
+.nr f +1
 The following shows a high level representation of the function used to check
 if a key can be represented with a given accidental where accidental is either
 sharp or flat:
@@ -1014,8 +1097,11 @@ is_correct_accidental(key, accidental)
 		pitch + dir*2 is accidental
 			return false
 	return true
-		
 .ft
+.DE
+.DS C
+Figure \nf: pseudocode for determining whether a given accidental is the correct
+one for writing a given key signature with
 .DE
 The idea here is two iterate through pitches in the key and check that if there
 is, for example, a Db in the key there is not also a D natural.
@@ -1029,6 +1115,10 @@ so the integer encoding could mean that there is a Bb and B natural).
 .PP
 The following lists the various input and output functions shared by the different
 programs in the system:
+.DS C
+Table \n+t: Common input and output functions used by different components of the system and
+what they do
+.DE
 .TS
 center;
 l lx .
@@ -1051,6 +1141,45 @@ print_note(a, p)	Print decoding of pitch p using accidental a
 .NH 3
 Internal
 .LP
+Amongst other things, the shared internal functions faciliate using modes as 
+frameworks within our semitonal pitch encoding scheme.
+The methods to implement this functionality make use of modular arithmetic to
+make sure that scales and pitches `wrap around' (one semitone above G# is A).
+.nr f +1
+.PP
+The following pseudocode shows how you can work with steps in our pitch system.
+Additions to degree and pitch remain within their respective fields (using
+modular arithmetic in the proper implementation).
+.DS
+.ft C
+apply_steps(degree, key, steps)
+	pitch <- key(degree)
+	if steps < 0 dir <- -1 else dir <- 1
+	if steps < 0 degree <- degree - 1
+	for s <- 0 to steps
+		interval <- MAJOR_SCALE[degree+key.mode]
+		pitch <- pitch + dir*interval
+		degree <- degree + dir
+	return pitch
+.ft
+.DE
+.DS C
+Figure \nf: pseudocode for appling a given positive or negative number of steps
+to a given degree of a given key and return the final pitch
+.DE
+As you can see, the idea here is to repeatedly add the intervals of the major
+scale to a starting pitch. The mode of the major scale which is being used can
+be thought of as an index offset.
+This function is used extensively when work must be done using a mode as a 
+framework, for example building chords, melodies, harmonies and filtering
+by intervals.
+.PP
+The following table lists various functions shared by the different parts of
+the system:
+.DS C
+Table \n+t: Common internal logic functions used by different components in the
+system and what they do
+.DE
 .TS
 center;
 l lx .
@@ -1076,8 +1205,52 @@ Returns the minimum pitch difference between pitches p and q in semitones
 T}
 .TE
 .NH 2
-Mode Set Building
+Mode Generating
+.nr f +1
 .LP
+The mode generator works by taking a list of notes as input and returning a
+list of all the keys which contain all of the nodes where each key is a
+root note paired with a mode.
+The following pseudocode shows how this core functionality is achieved:
+.DS
+.ft C
+process_notes(notes)
+	for root_note in notes
+		for mode in MAJOR_SCALE.modes
+			key <- new_key(root_note, mode)
+			for degree in MAJOR_SCALE.degrees
+				key_freq[key(d)][d+key.mode]++
+	return all keys (r, m) where key_freq[r][m] is notes.len
+.ft
+.DE
+.DS C
+Figure \nf: pseudocode showing how a list of all keys where each contains
+all of the notes given as input is returned
+.DE
+The idea here is to iterate through all the inputted notes and for each one,
+treat it as the root of each of the modes of the major scale and for each
+mode where that is so find all of the relative modes and mark them as containing
+that note.
+Recall that relative modes are ones which contain all of the same notes.
+In the proper implementation this is broken down into 2 functions where each
+one calls common functions for working with steps and key matrices.
+As mentioned in the design section, the mode generator can optionally take
+additional input in the form of a list of modes whereby modes not in this list
+will not be outputted even if they contain all of the input notes.
+This functionality is achieved by applying a mask to the key matrix before
+outputting the keys in it which match the criteria.
+The common functions
+.CW read_key_list ,
+.CW init_key_field
+and
+.CW print_matching_keys
+enable this functionality.
+.PP
+The following lists the core functions which the mode generator is broken down
+into:
+.DS C
+Table \n+t: Core functions used only by the mode generator and what they do
+.DE
 .TS
 center;
 l lx .
@@ -1091,8 +1264,59 @@ For each pitch in list n call check_relative_modes(key(note,m), k) for each mode
 T}
 .TE
 .NH 2
-Mode Set Filtering
+Interval Filtering
 .LP
+Interval filtering works by reading a set of keys and only outputting the ones
+from that set which contain all the intervals given as additional input.
+In this context, the intervals refer to the difference in pitch between the
+root (first pitch) of the scale and a given degree relative to the difference
+in pitch between the root and that degree of the major scale. For example,
+the minor scale (Aeolian) has a flat 3rd, flat 6th, flat 7th because each of
+those intervals is 1 semitone smaller than it would be in the major scale
+(Ionian). It has a natural 2nd, natural 4th and natural 5th because those
+intervals are the same size as they would be in the major scale.
+.nr f +1
+.DS
+.ft C
+correct_alteration(degree, mode, alteration)
+	interval <- 0
+	major_interval <- 0
+	for step is 0 to degree-1
+		interval <- interval + MAJOR_SCALE[step+mode]
+	for step is 0 to degree-1
+		major_interval <- major_interval + MAJOR_SCALE[step]
+	diff <- interval - major_interval
+	if alter is natural
+		return true if diff is alter else return false
+	elif alter is flat
+		return true if diff < 0 else return false
+	elif alter is sharp
+		return true if diff > 0 else return false
+.ft
+.DE
+.DS C
+Figure \nf: Pseudocode showing how to check whether a given degree is altered
+by a given alteration in a given mode relative to the major scale.
+.DE
+The idea in the code shown in figure \nf is to calculat the difference in
+semitones between the first of the mode and the given degree of that mode,
+then do the same for the major scale and then compare the results. If it is
+claimed that the given degree of the given mode is natural then the claim is
+correct if and only if the calculated intervals are equal.
+If the claim is that the degree is flat then it is true if and only if the
+major interval is greater than that of the given degree in the given mode.
+If the claim is that the degree is sharp then it is true if and only if the
+major interval is less than that of the given degree in the given mode.
+.PP
+.nr t +1
+The proper implementation breaks down the solution into the functions in
+Table \nt, where
+.CW degree_val
+is called by
+.CW correct_alteration .
+.DS C
+Table \nt: Core functions used only by the interval filter and what they do
+.DE
 .TS
 center;
 l lx .
@@ -1111,6 +1335,55 @@ Chord Building
 .NH 2
 Melody Generation
 .LP
+As mentioned in the methodology section earlier, the ``chord-based model'' from
+``Melody Generator: A Device for Algorithmic Music Construction'' 
+.[
+melody10
+.]
+is used
+in our melody generator because it takes chords as input and generates a melody
+for each one. The concept is to create a `skeleton melody' on all the weak
+beats (every other beat) using only pitches from the chord used as input and
+then fill in the gaps using any pitch from the modal context.
+.nr f +1
+.DS
+.ft C
+generate_line(len, tones, k)
+	melody <- list(len)
+	for each strong beat b in melody
+		b <- rand_element(tones)
+	for each weak beat b in melody
+		steps <- difference in steps between b.prev and b.next
+		if steps is 0
+			passing_step <- 1 if even(rand()) else -1
+		else
+			passing_step <- random_element([0..steps])
+		b <- b.prev.apply_step(passing_step)
+	return melody
+.ft
+.DE
+.DS C
+Figure \nf: Pseudocode showing how melody generation in our system is achieved
+using a stochastic implementation of the chord-based model.
+.DE
+The idea shown in figure \nf is an implementation of the chord-based model
+using randomness as a decider where necessary. This is chiefly how the
+melody generator component in our system works. Smooth stepwise motion is
+encouraged by the algorithm because this is traditionally what makes melodies
+sound `musical' to our ears but randomness is injected as a decider when there
+are equally `smooth' choices available to break up any accumulating monotony.
+.PP
+As with elsewhere in the system, modular arithmetic is employed to ensure
+that results from operations on pitches and degrees remain within their 
+respective fields. In the proper implementation,
+.CW generate_line
+calls
+.CW count_scale_steps
+.nr t +1
+(as in table \nt) to calculate intervals.
+.DS C
+Table \nt: Core functions used only for melody generation and what they do
+.DE
 .TS
 center;
 l lx .
@@ -1124,6 +1397,42 @@ T}
 .NH 2
 Melody Harmonisation
 .LP
+The method used by our melody harmoniser is inspired by ChoraleGUIDE
+.[ (
+choraleguide
+.]),
+where the fundamental idea is to first generate a bassline complimenting
+the melody such that each chord they form together is a primary chord with its
+root note in the bass part.
+Next, the bassline should be improved by either creating a different primary
+chord with the combination of pitches, putting the 3rd of the chord in the bass
+instead of the root, applying both those techniques or applying none of those
+techniques (4 total options).
+During this phase of improving the bass line it is important that the violation
+of certain musical rules must be minimised to produce pleasent harmonies.
+Finally, the middle part should be added such that
+it is as smooth as possible and combines with the melody and bass parts to
+form a sequence of chords.
+.PP
+This algorithm can be effectively carried out by a computer by breaking down
+the problem into searching and evaluating.
+The most delicate and important part of the process is that of improving the 
+bassline, so to do it we build a search tree by treating one end of the line as
+the root. Each node can have up to 4 children corresponding to the 4 improvement 
+options for that note in the bassline.
+Moving to the next layer in the tree
+represents choosing that improvement option and examing the next note in the
+bass line sequence.
+The leaves are reached once the end of the bass line is reached, which is the
+same length as the melody it is being written to compliement.
+Once a leaf has been reached the bassline resulting from that path is evaluated 
+by counting its faults.
+These evaluations
+then back-propagate up the tree so that the optimal path in the tree can be
+determined by picking the child with the least faults at each stage.
+.DS C
+Table \n+t: Core functions useed only for melody harmonisation and what they do
+.DE
 .TS
 center;
 l lx .
@@ -1155,33 +1464,12 @@ generate_bass_line(m, k)	T{
 Returns a simple bass line to work with melody line m in key k
 T}
 .TE
-.DS
-#define DEGREES 7
-#define NOTES   12
-#define EMPTY   -1
-
-enum Interval {
-	H = 1,
-	W = 2
-};
-
-const int IONIAN[DEGREES] = {W, W, H, W, W, W, H};
-
-void
-fill_notes(int notes[NOTES], int start, int m)
-{
-	int n = (start - 1) % NOTES, d = 0;
-
-	while (notes[n] == EMPTY) {
-		notes[n] = d;
-		n = (n + IONIAN[(d + m) % DEGREES]) % NOTES;
-		d = (d + 1) % DEGREES;
-	}
-}
-.DE
 .NH 2
 Conversion to MusicXML
 .LP
+.DS C
+Table \n+t: Core functions used only for generating MusicXML and what they do
+.DE
 .TS
 center;
 l lx .
@@ -1196,6 +1484,10 @@ T}
 .NH 2
 Stave Key Signature Display
 .LP
+.DS C
+Table \n+t: Core functions used only for display key signatures on a stave in a
+TUI and what they do
+.DE
 .TS
 center;
 l lx .
@@ -1227,6 +1519,10 @@ T}
 .NH 2
 Fretboard Mode Display
 .LP
+.DS C
+Table \n+t: Core functions used only for display modes on a guitar fretboard and
+what they do
+.DE
 .TS
 center;
 l lx .
@@ -1235,6 +1531,7 @@ _
 write_string(k)	Return a signel guitar string representation of key k
 note_to_fret(p)	Return the guitar fret which pitch p lies on a guitar E string
 .TE
+.bp
 .NH 1
 Evaluation
 .XS
@@ -1337,7 +1634,17 @@ tonalities so the tonality information in the ABC encoding was used to
 convert notes to degrees of their respective scales.
 The following graph shows a comparison of the frequency analysis of my system compared 
 with that of the folksongs.
+.nr f +1
+.B1
 .PSPIC -C img/eval/note_freq.eps
+.DS C
+Figure \nf: The distribution of note degrees as a percentage for each degree
+in output produced
+by our system and in folksongs in the Essen Folksong Collection. The table
+shows, for each degree, the difference in percent between ours and the folksongs
+as an absolute value followed by the sum of these and the mean average of them.
+.DE
+.B2
 As you can see, the notes of the tonic triad (1, 3 and 5) are the most common
 in both, which correlates with the results of the probe-tone experiment.
 However, the extent to which these notes are emphasised is higher in the output of our
@@ -1356,7 +1663,18 @@ the melody is satisfactory Aspell as just the overall frequency.
 The frequencies are shown on matrices whereby the value at row N column M
 represents the frequency of N-M transitions. Lighter colours represent higher
 frequencies.
+.nr f +1
+.B1
 .PSPIC -C img/eval/melody_note_trans_freq.eps
+.DS C
+Figure \nf: The distribution of note transitions as a percentage for each
+transition in output produced by our system and in folksongs in the Essen
+Folksong Collection. Lighter colours represent higher percentages.
+The tables show the difference in percentage for each transition between our 
+system and the folksongs as an absolute value along with the sum of these and 
+the mean average of them.
+.DE
+.B2
 This analysis shows that both sets of melodies have a tendency to move stepwise,
 that is most transitions are to an adjacent note in mode used to build the
 melody.
@@ -1400,7 +1718,18 @@ re-analyse the key frequently at any point during the MusicXML data, which allow
 us to accurately perform frequency analysis on the scale degrees of the chords used.
 The following graph compares the frequency of chords in Bach's compositions and
 the output of the melody harmoniser.
+.nr f +1
+.B1
 .PSPIC -C img/eval/chord_freq.eps
+.DS C
+Figure \nf: The distribution of chord degrees as a percentage for each degree
+in output produced
+by our system and in Bach compositions in the Music21 corpus. The table
+shows, for each degree, the difference in percent between ours and the Bach 
+corpus as an absolute value followed by the sum of these and the mean average 
+of them.
+.DE
+.B2
 In music theory, chords 1, 4 and 5 are considered the primary chords and have
 particular importance.
 .[ (
@@ -1421,7 +1750,18 @@ As with the melody analysis, it is essential to examine the frequency of
 transitions as well of individual chords to ensure the distribution is also
 accurate. The next graph presents chord transition data the same way as was
 done for melody note transitions.
+.nr f +1
+.B1
 .PSPIC -C img/eval/chord_trans_freq.eps
+.DS C
+Figure \nf: The distribution of chord transitions as a percentage for each
+transition in output produced by our system and in Bach compositions in the
+Music21 corpus. Lighter colours represent higher percentages.
+The tables show the difference in percentage for each transition between our 
+system and the Bach corpus as an absolute value along with the sum of these and 
+the mean average of them.
+.DE
+.B2
 In music a `cadence' refers to a chord transition at the end of a phrase
 and the most fundamental cadences are the `perfect cadence' (5-1), `plagal
 cadence' (4-1) and `imperfect cadence' (1-5)
@@ -1441,6 +1781,7 @@ Nonetheless, the correlation between the harmonised melodies produced by my syst
 Bach works and fundamental music theory is strong enough to be acceptable
 in my opinion as subjective factors such as `taste' and `style' mean this kind 
 of analysis is not an exact science.
+.bp
 .NH 1
 Summary
 .XS
