@@ -1,5 +1,3 @@
-.ds DY
-.RP no
 .nr f -1 1
 .nr t 0 1
 .TL
@@ -22,8 +20,21 @@ search space a musician explores to find successful ideas.
 This paper attempts to evaluate the effectiveness of applying Unix philosophy
 to computer aided composition by implementing a system using orthogonal programs,
 text streams and pipes and comparing the results to existing popular compositions.
+Eight different programs were produced which could be combined in various ways
+to provide different functionality including mode generation, mode filtering,
+chord generation, melody generation and melody harmonisation.
+Output was was quantitativly analysed, with the results being compared against
+Bach compositions and folksongs to show that they align with the fundamental 
+ideas of what makes music pleasant.
+The system was designed so that in the future new programs could be written 
+and integrated with the existing ones to provide extra operations.
 .AE
-I would like to thank God for everything.
+.LP
+Keywords: unix, pipelines, music, computer aided composition, melody, harmony, 
+tonality
+.bp
+I would like to thank God, my family, friends and supervisors Nazia
+Hameed and Adam Walker for their support throughout the project.
 .bp
 .SH 1
 List of abbreviations
@@ -1791,19 +1802,108 @@ Summary
 Project Management
 .NH 2
 Contributions and Reflections
+.LP
+The appropriate role of this software within the 
+sphere of computer aided composition became more specific when I categorised
+existing solutions into `MIT' and `New Jersey' styles.
+This contrast of approaches provides a map of development philosophies, 
+simplifying the identification of gaps in existing research.
+.PP
+The conception of the idea for this project was based on producing a computer
+aided composition tool which adheres to Unix philosophy
+.[ (
+unix84
+.]).
+This idea has remained central to the project, but the discovery of the
+Music21
+.[
+music21
+.]
+python musicology library was something I did not anticipate.
+This tool has proved to be valuable for its powerful analysis functions and
+rich built in corpus.
+Despite not being used for the primary software produced for this project,
+Music21 has played an important role in analysing existing compositions and
+providing a quantitative benchmark which the software developed for this project
+aims to match with its output.
+.PP
+A potential intellectual property issue arose when considering how to evaluate
+the software developed for this project.
+After deciding to use a method whereby existing compositions and the output of this
+project would be quantitatively analysed and compared, it became apparent that a source
+of existing compositions was required which permits their usage in this
+research.
+As mentioned in the evaluation section, the existing music used as benchmarks
+was Bach compositions and the Essen Folksong database, both of which are
+included in the Music21 corpus and are free to use for research.
+Thankfully, no compromises in quality had to be made due to copyright restrictions
+because these 2 corpuses made ideal benchmarks for our use case.
+.PP
+The work for this project did not involve any human participants or data subjects.
+Initially, qualitative evaluation of the software by human participants was considered
+but decided against on account of composition being highly subject to personal
+preference. The work for this project also did not use any personal data.
+.PP
+A broader consideration for this project is how its role will evolve as music
+styles change over time.
+Another benefit of the Unix style approach is that the modularity it provides
+makes modification of the software simpler than if it was a monolithic system.
+Within the context of music, this is useful because the demands of users will
+certainly change over time as conventions and tastes in music develop.
+This principle is also partly why I believe a system which outputs musical prompts
+for a human composer to arrange and implement is more useful than a system which
+attempts to entirely automate the music composition process, outputting complete
+pieces.
+A system such as that will stay relevant for less time because as time goes on
+what it produces will be further from what people desire.
+Ideas which are meant for a human composer to arrange and implement will stay
+relevant for longer because the human composer will be able to arrange them
+in a way which adheres to whatever conventions they choose.
+.PP
+Throughout the development of this project, its use as a teaching or self-study
+tool has become more and more apparant.
+The flexibility and interactivity of the system allow for core concepts to be
+demonstrated and experiemented upon in various ways, which would be of great 
+use to someone just becoming acquantined with such music theory concepts.
 .NH 2
 Future Extensions
-.IP
-Parameterise the amount of voices for hrm
-.IP
-chord identifier
-.IP
-melody generator arg to switch argv and stdin input types
-.IP
-readers for musicxml and abc
+.LP
+The possibilities for extending this project are almost endless, but I will
+briefly mention a few which seem natural additions to the existing functionality
+here.
+.PP
+First, the number of voices (lines) in the output of the melody harmoniser
+could be parameterised, allowing the user to request 2 part or 4 part harmony
+instead of 3 part, for example. Additionally, something like a length parameter
+could also be added to allow the user to have the chords change, for example,
+every other beat rather than every other beat for an alternate musical effect.
+.PP
+A new component program to take a set of notes and simply return the name of
+the chord they form would be useful, especially for anyone using the system
+for self-study of music theory. There are a nearly endless amount of chords
+so categorising and naming them can be challenging, but they have a systematic
+nature so logic could be programmed into a computer to process them.
+.PP
+An additional parameter could be given to the mode generator such that when it
+is set, it expects the note input via
+.CW STDIN
+rather than as a command line argument. This would allow it to read the output
+from the chord builder and melody generator and return all the modes which those
+ideas could also be treated in without incurring dissonance.
+.PP
+The ability to read abc notation input 
 .[
-unixabc13
+abcmusic
 .]
+would enable corpuses such as the Essen Folksong Collection to be used
+as input, allowing for functionality such as re-harmonisation of existing
+melodies possible without transcribing them to our input syntax.
+The simple and un-columnised nature of abc notation makes it a good candidate
+for integrating into a unix style system too, as has been explored already in
+``ABC with a UNIX Flavor''
+.[ (
+unixabc13
+.]).
 .ds CH
 .bp
 .TC
