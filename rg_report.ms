@@ -100,7 +100,7 @@ l lx .
 Pseudocode for determining whether a given accidental is the correct one for writing a given key signature with
 T}
 12	T{
-Pseudocode for applying a given positive or neg ative number of steps to a given degree of a given key and return the final pitch
+Pseudocode for applying a given positive or negative number of steps to a given degree of a given key and return the final pitch
 T}
 13	T{
 Pseudocode showing how a list of all keys where each contains all of the notes given as input is returned
@@ -1101,8 +1101,6 @@ Alteration	Int
 Common Functions
 .NH 3
 Input/Output
-.LP
-todo: explain pitch spelling, refer to papers
 .LP
 Input and output functions play an important role in the working of the system
 because they are what allow the component programs to be combined to provide
