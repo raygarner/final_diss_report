@@ -12,6 +12,10 @@ main: $(TITLE).ms
 appendix: $(APPENDIX).ms
 	groff -ms -t -Tpdf $(APPENDIX).ms > $(APPENDIX).pdf
 
+combine: $(APPENDIX).pdf $(TITLE).pdf
+	pdftk $(TITLE).pdf $(APPENDIX).pdf cat output combined.pdf
+	
+
 wc: $(TITLE).ms
 	refer -p ~/docs/roff/bib $(TITLE).ms | groff -e -t -p -ms -a | \
 		sed -e '/^</d' | wc -w
