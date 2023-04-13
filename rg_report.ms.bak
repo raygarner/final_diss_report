@@ -24,7 +24,7 @@ text streams and pipes and comparing the results to existing popular composition
 Eight different programs were produced which could be combined in various ways
 to provide different functionality including mode generation, mode filtering,
 chord generation, melody generation and melody harmonisation.
-Output was was quantitatively analysed, with the results being compared against
+Output was was quantitativly analysed, with the results being compared against
 Bach compositions and folksongs to show that they align with the fundamental 
 ideas of what makes music pleasant.
 The system was designed so that in the future new programs could be written 
@@ -100,7 +100,7 @@ l lx .
 Pseudocode for determining whether a given accidental is the correct one for writing a given key signature with
 T}
 12	T{
-Pseudocode for applying a given positive or neg ative number of steps to a given degree of a given key and return the final pitch
+Pseudocode for appling a given positive or neg ative number of steps to a given degree of a given key and return the final pitch
 T}
 13	T{
 Pseudocode showing how a list of all keys where each contains all of the notes given as input is returned
@@ -541,7 +541,7 @@ are either the same as the difference between the first degree and the third
 degree in the major scale intervals or of that in the minor scale intervals.
 Hence, thirds are always `major' or `minor'.
 Whether something is major or minor is an example of tonality, and when tonality
-is not explicitly stated it is assumed major is being referred to.
+is not explicitly stated it is assumed major is being refered to.
 .PP
 Once we have established what scale we are using, we can begin to build chords.
 The most fundamental chord structure is known as the triad which contains 3 notes:
@@ -898,7 +898,7 @@ chords outputted from the chord builder because for each of the programs
 between them there is one member in the output set generated from each 
 member of the input set. 
 .PS
-F: box "Figure \nf: graphic representation of pipeline from modes to harmonies" invis at (2.25, -1.1)
+F: box "Figure \nf: graphic represenetation of pipeline from modes to harmonies" invis at (2.25, -1.1)
 A: box "mode" "generator" wid 0.6 at (0, 0)
 B: box "interval" "filter" wid 0.6 at (0.75, 0)
 C: box "chord" "builder" wid 0.6 at (1.5,0)
@@ -1010,13 +1010,13 @@ Continuing with the theme of Unix style and `New Jersey' style, I wrote
 the software in C.
 This also helps make the software as portable as possible between the various
 Unix-like operating systems.
-To further maximise the compatibility and portability, the standard of C
+To further maximise the compatability and portability, the standard of C
 I wrote in was ANSI 99
 .[ (
 c99
 .]).
 The majority of the development was carried out using GCC as a compiler but
-the code has proven to be perfectly compatible with the minimalist C compiler
+the code has proven to be perfectly compatable with the minimalist C compiler
 TCC (https://bellard.org/tcc/).
 All development and testing was done targeting an x86 Linux system.
 .NH 2
@@ -1037,7 +1037,7 @@ D, 2 represents E and so on. The advantage of this method is that programming
 the internal logic for building chords, melodies and harmonies becomes simpler
 because to go up a step within the mode you can just add 1 to a number, to
 go up a fifth in the step you can just add 4 to the value and so on.
-However, the problem with this encoding method is that if you wish to work in
+However, the problem with this encodiing method is that if you wish to work in
 any mode other than C major (C Ionian) then transposition is required when
 encoding/decoding takes place. Additionally, it is impossible to
 produce music using more pitches that what can be found in a single mode (chromaticism).
@@ -1048,7 +1048,7 @@ chromaticism would be made more difficult.
 Encoding data this way would also reject the extensibility objective of the project
 by making the implementation of chromaticism more difficult.
 .PP
-Our pitch encoding method is similar to that of MIDI, stemming from USI
+Our pitch encoding method is simlilar to that of MIDI, stemming from USI
 .[ (
 usi81
 .]), 
@@ -1104,13 +1104,13 @@ Input/Output
 .LP
 todo: explain pitch spelling, refer to papers
 .LP
-Input and output functions play an important role in the working of the system
+Input and output functions play an imporant role in the working of the system
 because they are what allow the component programs to be combined to provide
 different operations.
 .PP
 The function to encode a note is surjective but not injective which means that every 
 internal integer used to represent pitch has at least one string such as `C'
-which maps to it but some have two as, for example, C# and Db will map to the same
+which maps to it but some have two as, for exampe, C# and Db will map to the same
 internal representation because they have the same pitch.
 The nature of the decoding function depends on the mode of the data being 
 decoded as, 
@@ -1170,7 +1170,7 @@ so the integer encoding could mean that there is a Bb and B natural).
 .NH 3
 Internal
 .LP
-Amongst other things, the shared internal functions facilitate using modes as 
+Amongst other things, the shared internal functions faciliate using modes as 
 frameworks within our semitonal pitch encoding scheme.
 The methods to implement this functionality make use of modular arithmetic to
 make sure that scales and pitches `wrap around' (one semitone above G# is A).
@@ -1193,7 +1193,7 @@ apply_steps(degree, key, steps)
 .ft
 .DE
 .DS C
-Figure \nf: pseudocode for applying a given positive or negative number of steps
+Figure \nf: pseudocode for appling a given positive or negative number of steps
 to a given degree of a given key and return the final pitch
 .DE
 As you can see, the idea here is to repeatedly add the intervals of the major
@@ -1278,7 +1278,7 @@ correct_alteration(degree, mode, alteration)
 Figure \nf: Pseudocode showing how to check whether a given degree is altered
 by a given alteration in a given mode relative to the major scale.
 .DE
-The idea in the code shown in figure \nf is to calculate the difference in
+The idea in the code shown in figure \nf is to calculat the difference in
 semitones between the first of the mode and the given degree of that mode,
 then do the same for the major scale and then compare the results. If it is
 claimed that the given degree of the given mode is natural then the claim is
@@ -1376,7 +1376,7 @@ chord with the combination of pitches, putting the 3rd of the chord in the bass
 instead of the root, applying both those techniques or applying none of those
 techniques (4 total options).
 During this phase of improving the bass line it is important that the violation
-of certain musical rules must be minimised to produce pleasant harmonies.
+of certain musical rules must be minimised to produce pleasent harmonies.
 Finally, the middle part should be added such that
 it is as smooth as possible and combines with the melody and bass parts to
 form a sequence of chords.
@@ -1388,10 +1388,10 @@ bassline, so to do it we build a search tree by treating one end of the line as
 the root. Each node can have up to 4 children corresponding to the 4 improvement 
 options for that note in the bassline.
 Moving to the next layer in the tree
-represents choosing that improvement option and examining the next note in the
+represents choosing that improvement option and examing the next note in the
 bass line sequence.
 The leaves are reached once the end of the bass line is reached, which is the
-same length as the melody it is being written to complement.
+same length as the melody it is being written to compliement.
 Once a leaf has been reached the bassline resulting from that path is evaluated 
 by counting its faults.
 These evaluations
@@ -1444,7 +1444,7 @@ Once the optimal bassline has been returned by
 the middle part is generated in a linear fashion such that,
 the final chord the most complete one possible and each preceding note
 is the nearest pitch within the current chord to the middle pitch in the
-neighboring chord. By a chord being `complete' it is meant that it
+neighbouring chord. By a chord being `complete' it is meant that it
 contains all degrees of the triad: the 1st, 3rd and 5th. For the other chords
 in the harmony, some omissions are allowed if it means that faults can be
 avoided. Table \n+t shows the possible degrees of the chord being considered
@@ -1497,10 +1497,10 @@ where it can be easily redirected to a file using the standard unix
 .CW > 
 operator.
 Since overall the pipeline processes several ideas in parallel (melody harmoniser
-can take any amount of melodies and will output harmonisations for all of them)
+can take any ammount of melodies and will output harmonisations for all of them)
 we need a system of presenting multiple ideas in a legible way.
 The way we do this in our MusicXML representation is to put each idea in sequence
-with a pause separating each one. This means when the MusicXML data is interpreted
+with a pause seperating each one. This means when the MusicXML data is interpreted
 by a scorewriter like MuseScore the ideas can be played back on after the other
 or the user can easily skip to a specific one.
 .PP
@@ -1549,7 +1549,7 @@ In figure \nf
 calculates the shortest interpretation of any interval (there are 2 possible
 interpretations of any interval due to the circular nature of pitch) and
 assumes this is what is meant by the representation.
-For example, the shortest interval between pitch 11 and pitch 0 is 1, not 11.
+For example, the shortest interval betweeen pitch 11 and pitch 0 is 1, not 11.
 If it turns out that the interval is negative (a step down has happened) yet
 the value of the first pitch is less than the second we must have `wrapped-around'
 the circle of pitches and we have entered the octave below.
@@ -1602,8 +1602,8 @@ spacing must be calculated.
 .nr f +1
 Figure \nf shows example output from this program and demonstrates correct
 indentation of the symbol for each line. The number of spaces in the indentation
-corresponds to the order in which they are traditionally written: from a starting
-note with a repeating interval, a similar idea to in the
+corresponds to the order in which they are traditionally writtten: from a starting
+note with a repeating interval, a similiar idea to in the
 .CW note_status
 function.
 .DS
@@ -2024,10 +2024,10 @@ relevant for longer because the human composer will be able to arrange them
 in a way which adheres to whatever conventions they choose.
 .PP
 Throughout the development of this project, its use as a teaching or self-study
-tool has become more and more apparent.
+tool has become more and more apparant.
 The flexibility and interactivity of the system allow for core concepts to be
-demonstrated and experimented upon in various ways, which would be of great 
-use to someone just becoming acquainted with such music theory concepts.
+demonstrated and experiemented upon in various ways, which would be of great 
+use to someone just becoming acquantined with such music theory concepts.
 .NH 2
 Future Extensions
 .LP
