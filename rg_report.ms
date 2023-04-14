@@ -60,13 +60,16 @@ Degree	Ordinal representing where a pitch lies in a given scale. Also used to de
 Mode	A scale with a specific interval treated as the first
 Melody	A line either played alone or higher in pitch than all other concurrent parts
 Chord	Two or more notes played concurrently
-Harmony	The combination of notes in a sequence of 1 or more chords
+Harmony	The combination of pitches in a sequence of 1 or more chords
 Tonality	The mode or scale which the melody and harmony is built from primarily
+Note	Combination of a single pitch and a duration for it to be played
 Key	Representation of tonality for practical interpretation
 Line	A sequence of single notes
 Natural	Unaltered pitch
 Sharp	Pitch raised by one semitone
 Flat	Pitch lowered by one semitone
+Rhythm	The way the note durations in music combine and interact
+Texture	The sonic qualities of the instruments and how they interact
 .TE
 .SH 1
 List of Tables
@@ -129,10 +132,11 @@ T}
 21	T{
 Terminal fretboard diagram showing C natural Ionian.
 T}
-M	Melody note frequency analysis and comparison
-n	Melody note transition frequency analysis and comparison
-p	Chord degree frequency analysis and comparison
-q	Chord degree transition frequency analysis and comparison
+23	Melody note pitch distribution and comparison
+24	Melody note pitch transition distribution and comparison
+25	Chord distribution and comparison
+26	Chord transition distribution and comparison
+27	Structure of project source files
 .TE
 .SH 1
 List of Equations
@@ -199,7 +203,11 @@ openmusic11
 PatchWork 
 successor, is used by institutes for 
 research and education as well as by individuals for composition.
-IRCAM solutions are an abstraction of Lisp, with `boxes' corresponding to
+IRCAM solutions are an abstraction of Lisp
+.[ (
+lisp78
+.]),
+with `boxes' corresponding to
 Lisp functions.
 The IRCAM style solutions allow for ideas to be built by combining multiple 
 individual ideas, each operating in one different element of music. 
@@ -253,8 +261,8 @@ OpenMusic implementation
 IMG/1 implementation	This project	
 .TE
 .PP
-Parallels between the IRCAM style solutions and the Bellcore music tools
-can be drawn: both make the user interact with the system by sequentially applying
+A similarity between the IRCAM style solutions and the Bellcore music tools
+can be observed: both make the user interact with the system by sequentially applying
 functions to a flow of data.
 Functions in the IRCAM solutions are abstractions of Lisp functions, shown as
 `functional boxes'
@@ -284,7 +292,11 @@ one already exists built into Unix-style operating systems?
 .PP
 Comprising of over 90 separate programs, becoming acquainted with the Bellcore
 music tools would be a daunting challenge for a non-technical composer and the
-more user friendly `IMG/1', built on top of said tools, fails to provide an interface
+more user friendly `IMG/1'
+.[ (
+img191
+.]),
+built on top of said tools, fails to provide an interface
 facilitating sequential function application on a data stream like the `visual
 programming language' of OpenMusic does.
 .PP
@@ -305,10 +317,11 @@ Primarily, this software will need to produce musical output in the form of
 tonal, melodic and harmonic ideas for a human composer to interpret.
 These ideas must adhere appropriately to established music theory principles
 and relate accordingly to the input used to generate them.
-For this project we will define `melody' as single voice sequential lines, 
-`harmony' as a chord or sequence of chords (where a chord is 2 or more notes
-played concurrently) and `tonality' as scales (where a scale is a set of intervals
-combined with a starting note).
+For this project we define `melody' primarily as a sequence of single pitches,
+`harmony' as a sequence of chords and `tonality' as the mode being used to
+generate the melody and harmony from.
+Please refer to the music glossary at the beginning of this document if you
+are unsure of the meaning for a musical term at any point.
 .NH 2
 Architectural
 .LP
@@ -320,7 +333,7 @@ This is advantageous to a user because it shows them clearly how the aspects of
 the system can be rearranged to produce a different desired output.
 Monolithic systems such as IRCAM style solutions have a huge amount of internal
 functions implemented to facilitate proper output production but they are not
-exposed to the user for them to utilise, even though they may be of use.
+exposed to the user for them to employ, even though they may be of use.
 Building the system up in a modular fashion allows the user to just use the
 specific functions which they need rather than having to load the whole program
 just to use a small portion of it.
@@ -340,7 +353,7 @@ Audio output
 Entire piece composition
 .IP
 Rhythmic and textural manipulation
-.PP
+.LP
 This is not to say that these things may not be built on top of this system in
 the future. It is important that this solution is extendable but this 
 dissertation is not concerned with implementing these features.
@@ -370,6 +383,8 @@ Literature Review
 .XS
 Literature Review
 .XE
+.NH 2
+Overview
 .LP
 The crux of this project is combining elements IRCAM and Bellcore approaches 
 to computer aided composition.
@@ -397,11 +412,11 @@ described in 'The Rise of Worse is Better'
 .[ (
 worseisbetter91
 .]).
-Gabriel compares what he called the `MIT approach' and the `New Jersey' approach.
+Gabriel compares what he calls the `MIT approach' and the `New Jersey' approach.
 The IRCAM approach is in line with the MIT approach because of its Lisp style 
 and the Bellcore approach is inline with the New Jersey approach because of its
 Unix style.
-Initially Gabriel frames the MIT approach to be superior thanks to its 
+Initially Gabriel presents the MIT approach as superior thanks to its 
 unwillingness to compromise correctness, consistency and completeness for the
 sake of simplicity.
 By contrast, the New Jersey approach assigns greater value to simplicity,
@@ -420,12 +435,15 @@ IRCAM
 IRCAM say the purpose of computer aided composition research was to `provide
 composers with the means to develop musical ideas and models using the 
 computer.'
-Contrast with the Bellcore philosophy can be seen here because Bellcore tools
+Contrast with the Bellcore music philosophy can be seen here because their tools
 attempt automate composition but IRCAM leave the composition up to the composer
 and just provide a means for them to work expressively with the computer.
 My goal with this project is inline with the IRCAM philosophy, however I want
 to implement a solution using a methodology inline with the Bellcore philosophy
 (Unix philosophy).
+The target users of the software developed for this project overlap with
+those targeted by the IRCAM designers: comptetent composers who would rather
+have freedom of expression than full automation of composition.
 .NH 2
 Bellcore
 .LP
@@ -440,7 +458,7 @@ This is then used to generate an accompaniment, and then used again to generate
 a melody.
 Finally the melody and accompaniment are merged to produce the finished piece.
 .PP
-This example shows an almost textbook application of the unix philosophy:
+This example shows a textbook application of the unix philosophy:
 the system is broken down into orthogonal programs which each solve a general
 problem and they are tied together using a shell script.
 This makes things simpler for a developer because each individual program can be
@@ -451,7 +469,7 @@ One shortcoming apparent here is that the tonality aspect of the system is
 limited: the user appears to be limited to only a major and minor 
 key for each note in a western harmony system.
 7 different modes can be derived from just a standard western 7 note major scale, 
-these being used in different styles of music (more on this later).
+these being used in different styles of music (see methodology section for more on this).
 What this example shows is also closer to computer composition than computer
 aided composition.
 For this project I am more interested in a computer aided composition system
@@ -510,11 +528,11 @@ Some useful further reading if you desire it is ``The AB Guide to Music Theory''
 abtheory1
 .]).
 .PP
-Traditionally there are 12 tones used to represent pitch:
+Traditionally, pitch is divided into 12 values:
 C, C#, D, D#, E, F, F#, G, G#, A, A# and B (using only sharps and no flats to represent them).
-The interval between two adjacent tones in this sequence is known as a semitone
-and the interval between every other tone in
-this sequence known as a whole-tone.
+The interval between two adjacent pitches in this sequence is known as a semitone
+and the interval between every other pitch in
+this sequence known as a whole-tone (aka tone).
 For example, C and D are a whole tone apart and C and C# are a semitone apart.
 .PP
 The most fundamental scale in western music is the major scale, which is a
@@ -531,7 +549,7 @@ For example, C is the first degree of the C major scale and D is the second,
 E is the third and so on. Each interval between each adjacent note in a scale
 is known as a `step' and the other various intervals between notes in the scale
 can be described in a similar way to how we use degrees. For example, E is a third 
-above C and A is a third above F. 
+above C and A is a third above F in the key of C major.
 .PP
 Bare in mind that not every step in the scale represents the same difference
 in pitch because some intervals of the scale are a tone and some are a semitone.
@@ -578,7 +596,8 @@ Table \n+t shows the modes of the major scale, where ``relativity''
 is the degree of the major scale treated as the first to define that mode.
 .DS C
 Table \nt: Modes of the major scale shown with their intervals and what degree
-their first degree is in the major scale (relativity)
+their first degree is in the major scale (relativity). `T' represents a
+whole-tone and `S' represents a semitone.
 .DE
 .TS
 center;
@@ -610,7 +629,7 @@ melody10
 discusses some ideas for algorithmic melody generation.
 One of these it calls the ``Chord-Based Model'' and it fundamentally works by 
 using a chord
-as a template for melody construction. Notes within the chord are placed on
+as a template for melody construction. Notes from the chord are placed on
 `strong' beats in the rhythm to create a `skeleton melody' and notes of the 
 scale are used to connect them to create the final melody. 
 This simple technique serves as an ideal basis for a program within our system
@@ -678,11 +697,9 @@ Overview
 .LP
 As there are many ways to cut a cake, there are many ways to divide the overall
 functionality of our system into orthogonal programs. 
-Figure \n+f outlines
-how the system is broken down into building blocks which can be combined in
-various ways to produce output.
+Figure \n+f shows the abstract representation we use to think of the input and
+output types of each component program in the system.
 .PS
-F: box "Figure \nf: graphic representation of example program functionality" invis at (1, -1)
 A: box "a" invis wid 0.3 at (0, 0)
 P: box "program" wid 1 at (1, 0)
 B: box "b" invis wid 0.3 at (2, 0)
@@ -693,6 +710,12 @@ arrow from P.e to B.w
 arrow from X.s to P.n
 arrow from Y.n to P.s
 .PE
+.DS C
+Figure \nf: Graphic representation of an example program in our system where
+a is the type of input passed via STDIN, c is the type of input passed as a
+command line argument, d* is the type of an optional command line argument
+and b is the type of the output written to STDOUT.
+.DE
 Figure \nf shows an example program in the format we use to represent the components
 of our system.
 The program takes input of type
@@ -733,7 +756,7 @@ Equation \ne: mode generator output defined using set notation
 Figure \n+f shows the functionality of the mode generator in terms of its input
 and output types.
 .PS
-F: box "Figure \nf: graphic representation of mode generator functionality" invis at (1,-1)
+F: box "Figure \nf: graphic representation of mode generator I/O types" invis at (1,-1)
 A: box "mode set*" invis 0.7 at (-0.5, 0)
 P: box "mode generator" wid 1 at (1, 0)
 B: box "mode set" invis wid 0.7 at (2.5, 0)
@@ -765,7 +788,7 @@ Equation \n+e: interval filter output defined using set notation
 Figure \n+f shows the functionality of the interval filter in terms of its input
 and output types.
 .PS
-F: box "Figure \nf: graphic representation of interval filter functionality" invis at (1,-1)
+F: box "Figure \nf: graphic representation of interval filter I/O types" invis at (1,-1)
 A: box "mode set*" invis 0.7 at (-0.5, 0)
 P: box "interval filter" wid 1 at (1, 0)
 B: box "mode set" invis wid 0.7 at (2.5, 0)
@@ -791,7 +814,7 @@ if no modes are supplied the set of all modes is used.
 Figure \n+f shows the functionality of the chord builder in terms of its input
 and output types.
 .PS
-F: box "Figure \nf: graphic representation of chord builder functionality" invis at (1,-1)
+F: box "Figure \nf: graphic representation of chord builder I/O types" invis at (1,-1)
 A: box "mode set*" invis wid 0.7 at (-0.5, 0)
 P: box "chord builder" wid 1 at (1, 0)
 B: box "chord set" invis wid 0.7 at (2.5, 0)
@@ -811,7 +834,7 @@ chord. In addition to a set of chords as input, it takes the length of the
 melody to be generated and a seed value for randomness.
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of melody generator functionality" invis at (1, -1)
+F: box "Figure \nf: graphic representation of melody generator I/O types" invis at (1, -1)
 A: box "chord set" invis wid 0.7 at (-0.5, 0)
 P: box "melody generator" wid 1 at (1, 0)
 B: box "melody set" invis wid 0.7 at (2.5, 0)
@@ -831,7 +854,7 @@ Each 3-part harmony has the melody in the highest pitch line, with 2 accompanyin
 lines beneath it in pitch.
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of melody harmoniser functionality" invis at (1, -0.5)
+F: box "Figure \nf: graphic representation of melody harmoniser I/O types" invis at (1, -0.5)
 A: box "melody set" invis wid 0.7 at (-1, 0)
 P: box "melody harmoniser" wid 1.2 at (1, 0)
 B: box "harmonised-melody set" invis wid 1.5 at (3, 0)
@@ -841,14 +864,15 @@ arrow from P.e to B.w
 .NH 2
 MusicXML Formatter
 .LP
-The musicxml formatter reads a set of harmonised melodies and outputs sheet music
-containing each one after the other, represented using MusicXML
-.[ (
+The MusicXML formatter reads a set of harmonised melodies and converts them
+to MusicXML data 
+.[
 musicxml01
-.]).
+.]
+which can be opened by various ScoreWriters.
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of musicxml formatter functionality" invis at (1, -0.5)
+F: box "Figure \nf: graphic representation of musicxml formatter I/O types" invis at (1, -0.5)
 A: box "harmonised melody set" invis wid 1.5 at (-1, 0)
 P: box "musicxml formatter" wid 1.2 at (1, 0)
 B: box "musicxml data" invis wid 1 at (3, 0)
@@ -867,7 +891,7 @@ There is one to display modes on a guitar fretboard and one to display them
 on a stave using traditional key signature notation.
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of fretboard formatter functionality" invis at (1,-0.5)
+F: box "Figure \nf: graphic representation of fretboard formatter I/O types" invis at (1,-0.5)
 A: box "mode set" invis wid 0.7 at (-1, 0)
 P: box "fretboard formatter" wid 1.2 at (1, 0)
 B: box "fretboard display" invis wid 1 at (3, 0)
@@ -876,7 +900,7 @@ arrow from P.e to B.w
 .PE
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of stave formatter functionality" invis at (1, -0.5)
+F: box "Figure \nf: graphic representation of stave formatter I/O types" invis at (1, -0.5)
 A: box "mode set" invis wid 0.7 at (-1, 0)
 P: box "stave formatter" wid 1.2 at (1, 0)
 B: box "stave display" invis wid 1 at (3, 0)
@@ -894,7 +918,7 @@ Various permutations of the programs can be used to produce different results.
 Figure \nf shows a particularly long pipeline beginning with generating a set of 
 modes and ending with a set of harmonised melodies represented in MusicXML 
 format. The number of harmonies in the output will be the same as the number of 
-chords outputted from the chord builder because for each of the programs 
+modes outputted by the interval filter because for each of the programs
 between them there is one member in the output set generated from each 
 member of the input set. 
 .PS
@@ -928,7 +952,7 @@ arrow from T.s to D.n
 arrow from U.n to D.s
 .PE
 .PP
-A user may choose to build up such a pipeline incrementally by first only only
+A user may choose to build up such a pipeline incrementally by first only
 using the mode generator, analysing the output and then deciding to append
 the interval filter to the pipeline, thereby removing modes which do not meet their
 criteria. Once satisfied, they could examine the chord of a given nature for
@@ -949,9 +973,9 @@ programs.
 It is important to note that the pipeline could end with any of the programs
 and the output could be redirected to a file by the user. This may be satisfactory
 and the end of the users interaction with the system, or they may wish to use
-the file later to input into another pipeline build using the components of 
+the file later as input into another pipeline built using the components of 
 the system.
-Not only this, but the user may wish to manually write musical data to files
+Not only this, but the user may also manually write musical data to files
 and then input them into a pipeline. The transmission language used by the system
 has deliberately been kept as simple as possible to make this easier for users.
 .PP
@@ -1024,7 +1048,8 @@ Common Data Types
 .LP
 There are a number of data types used by the programs which make up the overall
 system. The goal of the encoding method is to represent musical data in a way
-which is simple for a computer to interpret and manipulate but also simple to
+which is simple for a computer to interpret and manipulate for musical operations
+but also simple to
 encode and decode when reading input or writing output. 
 .PP
 ``Bach in a box''
@@ -1040,11 +1065,9 @@ go up a fifth in the step you can just add 4 to the value and so on.
 However, the problem with this encoding method is that if you wish to work in
 any mode other than C major (C Ionian) then transposition is required when
 encoding/decoding takes place. Additionally, it is impossible to
-produce music using more pitches that what can be found in a single mode (chromaticism).
+produce music using more pitches than what can be found in a single mode (chromaticism).
 This method is unsuitable for our usage because the pipeline design of our 
 system places high importance on the simplicity and efficiency of reading and writing data.
-Encoding data this way would also mean that future extensions implementing
-chromaticism would be made more difficult.
 Encoding data this way would also reject the extensibility objective of the project
 by making the implementation of chromaticism more difficult.
 .PP
@@ -1074,7 +1097,6 @@ messiaen76
 .]
 are of interest in the field of musicology and could be easily implemented into
 our system.
-.PP
 Table \n+t shows the types used to encode musical data in this project.
 .DS C
 Table \nt: Musical data types and how they are encoded in our system. \[ci][x]
@@ -1115,7 +1137,7 @@ decoded as,
 for example, the pitch represented internally by the integer 1 may be outputted
 as C# or Db.
 In traditional music representation, each key signature is written using either
-entirely sharps or entirely flats and if it a key signature contains
+entirely sharps or entirely flats and if a key signature contains
 C# then it cannot contain a C natural. However, if the key signature 
 contained a Db it would mean that there is no D natural in the key signature
 (but there could be a C natural). This means that some key signatures must be
@@ -1158,13 +1180,10 @@ one for writing a given key signature with
 .DE
 The idea here is two iterate through pitches in the key and check that if there
 is, for example, a Db in the key there is not also a D natural.
-We must check an extra pitch in the same direction direction though to avoid
-false negatives in cases such as when there is a Bb and Cb because Cb has the
-same pitch as B natural.
 We must also check that the next pitch in the same direction is accidental before
 saying its invalid else we would produce false negatives in such cases as when
 there is a Bb and a Cb in the key (because Cb and B natural have the same pitch
-so the integer encoding could mean that there is a Bb and B natural).
+so the integer encoding could imply that there is a Bb and B natural).
 .NH 3
 Internal
 .LP
@@ -1205,8 +1224,7 @@ Mode Generating
 .nr f +1
 .LP
 The mode generator works by taking a list of notes as input and returning a
-list of all the keys which contain all of the nodes where each key is a
-root note paired with a mode.
+list of all the keys which contain all of the notes.
 Figure \nf shows how this core functionality is achieved:
 .DS
 .ft C
@@ -1224,31 +1242,25 @@ Figure \nf: pseudocode showing how a list of all keys where each contains
 all of the notes given as input is returned
 .DE
 The idea here is to iterate through all the inputted notes and for each one,
-treat it as the root of each of the modes of the major scale and for each
-mode where that is so find all of the relative modes and mark them as containing
-that note.
+treat it as the root of each of the modes of the major scale.
+Then for each of these
+modes
+all of the relative modes are found and marked as containing this note of the
+input.
 Recall that relative modes are ones which contain all of the same notes.
-In the proper implementation this is broken down into 2 functions where each
-one calls common functions for working with steps and key matrices.
 As mentioned in the design section, the mode generator can optionally take
 additional input in the form of a list of modes whereby modes not in this list
 will not be outputted even if they contain all of the input notes.
 This functionality is achieved by applying a mask to the key matrix before
 outputting the keys in it which match the criteria.
-The common functions
-.CW read_key_list ,
-.CW init_key_field
-and
-.CW print_matching_keys
-enable this functionality.
 .NH 2
 Interval Filtering
 .LP
 Interval filtering works by reading a set of keys and only outputting the ones
 from that set which contain all the intervals given as additional input.
 In this context, the intervals refer to the difference in pitch between the
-root (first pitch) of the scale and a given degree relative to the difference
-in pitch between the root and that degree of the major scale. For example,
+root (first pitch) of the scale and a given degree relative to the corresponding
+property in the major scale. For example,
 the minor scale (Aeolian) has a flat 3rd, flat 6th, flat 7th because each of
 those intervals is 1 semitone smaller than it would be in the major scale
 (Ionian). It has a natural 2nd, natural 4th and natural 5th because those
@@ -1291,22 +1303,22 @@ Chord Building
 Chord building is a relatively simple exercise given we have access to the
 .CW apply_steps
 function defined earlier and the mode to build the chord from.
-For example, outputting the notes of a triad is a case of outputting the root
-note, the note 2 steps above that (the third) and finally the note 4 steps
+For example, outputting the pitches of a triad is a case of outputting the root
+pitch, the pitch 2 steps above that (the third) and finally the pitch 4 steps
 above the root (the fifth).
-Remember that the interval in semitones a pitch refers to depends upon the
-mode we are working in.
+Remember the specific number of semitones in an interval depends on the mode
+context.
 .nr f +1
 .DS
 .ft C
 build_chord(key, degree, extensions)
 	chord <- list()
-	root <- key(d)
+	root <- key(degree)
 	chord.append(root)
 	chord.append(apply_steps(degree, key, 2))
 	chord.append(apply_steps(degree, key, 4))
 	for each extdegree in extensions
-		chord.append(apply_steps(degree, key, extdegree)2
+		chord.append(apply_steps(degree, key, extdegree))
 	return chord
 .ft
 .DE
@@ -1324,16 +1336,16 @@ melody10
 .]
 is used
 in our melody generator because it takes chords as input and generates a melody
-for each one. The concept is to create a `skeleton melody' on all the weak
+for each one. The concept is to create a `skeleton melody' on all the strong
 beats (every other beat) using only pitches from the chord used as input and
-then fill in the gaps using any pitch from the modal context.
+then fill in the gaps using any pitch from the contextual mode.
 .nr f +1
 .DS
 .ft C
-generate_line(len, tones, k)
+generate_line(len, chord_pitches, k)
 	melody <- list(len)
 	for each strong beat b in melody
-		b <- rand_element(tones)
+		b <- rand_element(chord_pitches)
 	for each weak beat b in melody
 		steps <- difference in steps between b.prev and b.next
 		if steps is 0
@@ -1354,6 +1366,8 @@ melody generator component in our system works. Smooth stepwise motion is
 encouraged by the algorithm because this is traditionally what makes melodies
 sound `musical' to our ears but randomness is injected as a decider when there
 are equally `smooth' choices available to break up any accumulating monotony.
+In this context `smoothness' refers to pitches in the line tending to move
+to the nearest of the viable pitches next (smallest intervals).
 .PP
 As with elsewhere in the system, modular arithmetic is employed to ensure
 that results from operations on pitches and degrees remain within their 
@@ -1377,7 +1391,7 @@ During this phase of improving the bass line it is important that the violation
 of certain musical rules must be minimised to produce pleasant harmonies.
 Finally, the middle part should be added such that
 it is as smooth as possible and combines with the melody and bass parts to
-form a sequence of chords.
+form a sequence of triad-based chords.
 .PP
 This algorithm can be effectively carried out by a computer by breaking down
 the problem into searching and evaluating.
@@ -1434,15 +1448,14 @@ Figure \nf: Pseudocode demonstrating the bassline improvement search, where
 .DE
 Figure \nf shows how
 .CW improve_bassline
-is defined recursively to perform a depth first and return the optimal result
+is defined recursively to perform a depth first search and return the optimal result
 according to evaluations carried out by
 .CW count_faults .
 Once the optimal bassline has been returned by
 .CW improve_bassline
 the middle part is generated in a linear fashion such that,
-the final chord the most complete one possible and each preceding note
-is the nearest pitch within the current chord to the middle pitch in the
-neighboring chord. By a chord being `complete' it is meant that it
+it is as smooth as possible and the final chord is as complete as possible.
+By a chord being `complete' it is meant that it
 contains all degrees of the triad: the 1st, 3rd and 5th. For the other chords
 in the harmony, some omissions are allowed if it means that faults can be
 avoided. Table \n+t shows the possible degrees of the chord being considered
@@ -1454,7 +1467,8 @@ chorale18
 .]).
 .DS C
 Table \nt: Allowed combinations of bass and melody degrees of the chord they
-are being treated as
+are being treated as. When degree 3 is in the bass the chord is said to be
+inverted.
 .DE
 .TS
 center;
@@ -1472,7 +1486,7 @@ considers faults are the following:
 .IP -
 consecutive bass notes
 .IP -
-bass and melody notes being exactly an octave (12 tones) apart for consecutive beats
+bass and melody notes being exactly an octave (12 semitones) apart for consecutive beats
 .IP -
 leap of a tritone (flattened fifth interval)
 .IP -
@@ -1487,8 +1501,8 @@ choraleguide
 .NH 2
 Conversion to MusicXML
 .LP
-To avoid manually playing or transcribing output from the harmony generator,
-its output can be piped into the musicxml formatter which takes the input and
+Output from the melody harmoniser can be
+piped into the musicxml formatter which takes the input and
 writes the musicxml representation of it to
 .CW STDOUT
 where it can be easily redirected to a file using the standard unix 
@@ -1503,7 +1517,7 @@ by a scorewriter like MuseScore the ideas can be played back on after the other
 or the user can easily skip to a specific one.
 .PP
 Another challenge involved in this process is how to convert our encoding of
-pitch to theirs; our system simply uses the 12 tones of western music but
+pitch to theirs; our system simply uses the 12 pitches of western music but
 in MusicXML the octave of each pitch must be manually specified.
 It follows intuitively that the default octave for the melody must be the highest,
 with the middle part beneath that and the bass part beneath that but each
@@ -1513,7 +1527,7 @@ a semitone in our system from B to C would be interpreted as a step down of
 11 semitones.
 .PP
 Additionally, the MusicXML representation of pitch does regard semitones as
-primitives. That is, each pitch is represent as a pair of a natural note and
+primitives. That is, each pitch is represented as a pair of a natural note and
 and alteration applied to it. So C# which is encoded as the integer 1 in our
 system must be converted to (C, #) to be valid in MusicXML.
 For simplicity, we represent all non-naturals as sharps for our MusicXML 
@@ -1560,7 +1574,7 @@ Stave Key Signature Display
 As a component program our system provides functionality to display modes
 as a key signature on a stave in the terminal.
 A core part of the algorithm we use to do this is where a list of flags
-is produced where each element represents whether that line on the stave should
+is produced with each element representing whether that line on the stave should
 have an accidental (sharp or flat) on it.
 This list of flags must be calculated from a number which represents the total
 number of accidentals and the type of accidental being used because each key
@@ -1594,14 +1608,14 @@ the starting note line is F and the interval is a perfect fifth.
 Once the list from
 .CW note_status
 has been obtained, it is a matter of printing the lines to screen.
-Do to the nature of printing to the terminal being such that lines must be
+Due to the nature of printing to the terminal being such that lines must be
 printed sequentially from top to bottom, the correct indentation 
 spacing must be calculated.
 .nr f +1
 Figure \nf shows example output from this program and demonstrates correct
 indentation of the symbol for each line. The number of spaces in the indentation
 corresponds to the order in which they are traditionally written: from a starting
-note with a repeating interval, a similar idea to in the
+note with an interval repeatedly applied, the same idea as in the
 .CW note_status
 function.
 .DS
@@ -1637,7 +1651,7 @@ diagram. These look as if you had put the guitar facing upwards on your lap and
 were viewing the fretboard from directly above with the lowest string closest
 to your body and the highest the furthest away. It is assumed that the guitar
 is a right handed one, which means the frets lowest in pitch are to the left.
-Without going into too much detail, the circular nature of modes mean that
+The circular nature of modes mean that
 they are repeated all over the fretboard.
 .nr f +1
 Figure \nf shows the fretboard diagram outputted by our program for C Ionian.
@@ -1666,7 +1680,7 @@ each integer value we use to represent a different pitch corresponds to the
 fretboard as adjacent frets are 1 all semitone apart too.
 Additionally, this means that if we can create a method to write one string
 then this can be applied to the rest of the strings with an offset to produce
-a correct result.
+the correct result.
 .nr f +1
 .DS
 .ft C
@@ -1798,8 +1812,8 @@ the function of that note in its melodic context.
 This idea of scalic context being what gives a note its character to listeners
 is proven by the probe-tone experiment because they were only able to assign
 a `completeness' value to each note of the scale when it was preceded by stepwise
-ascension of the scale.
-Corresponding analysis was produced a subset of the Essen Folksong 
+ascension of the scale and followed by the root note of the scale.
+Corresponding analysis was produced by applying this theory to a subset of the Essen Folksong 
 Collection. The pieces in the Essen Folksong Collection use a variety of
 tonalities so the tonality information in the ABC encoding was used to
 convert notes to degrees of their respective scales.
@@ -1809,11 +1823,11 @@ with that of the folksongs.
 .B1
 .PSPIC -C img/eval/note_freq.eps
 .DS C
-Figure \nf: The distribution of note degrees as a percentage for each degree
-in output produced
-by our system and in folksongs in the Essen Folksong Collection. The table
-shows, for each degree, the difference in percent between ours and the folksongs
-as an absolute value followed by the sum of these and the mean average of them.
+Figure \nf: The distribution of note pitches degrees in output from our system
+and works in the Essen Folksong Collection. Each degree is shown as the 
+percentage of the total pitches it makes up. The table shows, for each degree, 
+the difference in percent between ours and the folksongs as an absolute value.
+The sum and mean average of the differences are also provided.
 .DE
 .B2
 As you can see, the notes of the tonic triad (1, 3 and 5) are the most common
@@ -1838,12 +1852,12 @@ frequencies.
 .B1
 .PSPIC -C img/eval/melody_note_trans_freq.eps
 .DS C
-Figure \nf: The distribution of note transitions as a percentage for each
-transition in output produced by our system and in folksongs in the Essen
-Folksong Collection. Lighter colours represent higher percentages.
-The tables show the difference in percentage for each transition between our 
-system and the folksongs as an absolute value along with the sum of these and 
-the mean average of them.
+Figure \nf: The distribution of note pitch transitions in output from out system
+and works in the Essen Folksong Collection. Each transition is shown as the 
+percentage of the total transitions it makes up with lighter colours 
+representing higher percentages. The tables show the difference in percentage 
+for each transition between our system and the folksongs as an absolute value.
+A sum and mean average of the differences is also displayed.
 .DE
 .B2
 This analysis shows that both sets of melodies have a tendency to move stepwise,
@@ -1893,12 +1907,11 @@ the output of the melody harmoniser.
 .B1
 .PSPIC -C img/eval/chord_freq.eps
 .DS C
-Figure \nf: The distribution of chord degrees as a percentage for each degree
-in output produced
-by our system and in Bach compositions in the Music21 corpus. The table
-shows, for each degree, the difference in percent between ours and the Bach 
-corpus as an absolute value followed by the sum of these and the mean average 
-of them.
+Figure \nf: The distribution of chord degrees in output from our system
+and Bach compositions. Each degree is shown as the percentage of the total 
+pitches it makes up. The table shows, for each degree, the difference in 
+percent between ours and Bach as an absolute value. The sum and mean average of 
+the differences are also provided.
 .DE
 .B2
 In music theory, chords 1, 4 and 5 are considered the primary chords and have
@@ -1925,12 +1938,12 @@ done for melody note transitions.
 .B1
 .PSPIC -C img/eval/chord_trans_freq.eps
 .DS C
-Figure \nf: The distribution of chord transitions as a percentage for each
-transition in output produced by our system and in Bach compositions in the
-Music21 corpus. Lighter colours represent higher percentages.
+Figure \nf: The distribution of chord transitions in output from out system
+and Bach compositions. Each transition is shown as the percentage of the total 
+transitions it makes up with lighter colours representing higher percentages. 
 The tables show the difference in percentage for each transition between our 
-system and the Bach corpus as an absolute value along with the sum of these and 
-the mean average of them.
+system and in Bach as an absolute value. A sum and mean average of the 
+differences is also displayed.
 .DE
 .B2
 In music a `cadence' refers to a chord transition at the end of a phrase
@@ -1945,13 +1958,13 @@ The Bach analysis shows some emphasis towards the primary cadences, however
 not as much as I expected, with a distinct lack of 4-1 transitions.
 This could be due to the algorithm which Music21 uses to `chordify' the 
 MusicXML representations misinterpreting some instances of chord 4 as chord 1
-(they both have the first degree of the scale as a note). The MusicXML for
+(they both contain the first degree of the scale). The MusicXML for
 the Bach works is far more complex than the MusicXML for my harmonised melodies
 so its possible this is causing some complications for the chordify algorithm.
 Nonetheless, the correlation between the harmonised melodies produced by my system,
 Bach works and fundamental music theory is strong enough to be acceptable
-in my opinion as subjective factors such as `taste' and `style' mean this kind 
-of analysis is not an exact science.
+in my opinion as subjective factors such as `taste' and `style' mean 
+variation does not imply dissonance.
 .bp
 .NH 1
 Summary
@@ -1961,6 +1974,42 @@ Summary
 .NH 2
 Project Management
 .LP
+As much as possible, the programs were developed in such an order that the latest
+addition could be appended to the end of a pipeline using the existing ones.
+The modular nature allowed for each component program to be tested and
+debugged individually, making it easier to find bugs and correct them.
+Shell scripts were written to encapsulate long pipelines when testing them.
+.PP
+.nr f +1
+As shown in figure \nf, the project structure was made as simple as possible by 
+having one file of C source per executable plus a library for the shared 
+functions and data.
+``The Practice of Programming''
+.[
+practiceofprogramming99
+.]
+was referenced during development as a style guide and git was used for version
+control.
+.DS
+.ft C
+src
+|-- cf.c (stave mode display)
+|-- common.c
+|-- common.h
+|-- crd.c (chord builder)
+|-- fb.c (fretboard mode display)
+|-- hrm.c (melody harmoniser)
+|-- int.c (interval filter)
+|-- Makefile
+|-- md.c (mode generator)
+|-- mld.c (melody generator)
+|-- mxml.c (musicxml formatter)
+.ft
+.DE
+.DS C
+Figure \nf: Structure of the project source files
+.DE
+.PP
 .NH 2
 Contributions and Reflections
 .LP
@@ -2037,7 +2086,7 @@ First, the number of voices (lines) in the output of the melody harmoniser
 could be parameterised, allowing the user to request 2 part or 4 part harmony
 instead of 3 part, for example. Additionally, something like a length parameter
 could also be added to allow the user to have the chords change, for example,
-every other beat rather than every other beat for an alternate musical effect.
+every other beat rather than every beat for an alternate musical effect.
 .PP
 A new component program to take a set of notes and simply return the name of
 the chord they form would be useful, especially for anyone using the system

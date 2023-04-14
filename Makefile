@@ -13,7 +13,7 @@ appendix: $(APPENDIX).ms
 	groff -ms -t -Tpdf $(APPENDIX).ms > $(APPENDIX).pdf
 
 combine: $(APPENDIX).pdf $(TITLE).pdf
-	pdftk $(TITLE).pdf $(APPENDIX).pdf cat output combined.pdf
+	pdftk $(TITLE).pdf $(APPENDIX).pdf cat output $(TITLE)_full.pdf
 	
 
 wc: $(TITLE).ms
