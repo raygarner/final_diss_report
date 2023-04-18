@@ -36,73 +36,6 @@ I would like to thank God, my family, friends and supervisors Nazia
 Hameed and Adam Walker for their support throughout the project.
 .bp
 .SH 1
-List of Tables
-.LP
-.TS
-l l .
-1	How this project combines elements of existing works
-2	Chord tonality in the major scale
-3	Modes of the major scale
-4	Input and output types of the component programs
-5	Musical data encoding in our system
-6	Bass and melody chord degree combinations
-7	Guitar string pitch offsets
-.TE
-.SH 1
-List of Figures
-.LP
-.TS
-l lx .
-1	Example program functionality graphic representation
-2	Mode generator functionality graphic representation
-3	Interval filter functionality graphic representation
-4	Chord builder functionality graphic representation
-5	Melody generator functionality graphic representation
-6	Melody harmoniser functionality graphic representation
-7	MusicXML generator functionality graphic representation
-8	Fretboard formatter functionality graphic representation
-9	Stave formatter functionality graphic representation
-10	Full pipeline from modes to harmonies graphic representation
-11	T{
-Pseudocode for determining whether a given accidental is the correct one for writing a given key signature with
-T}
-12	T{
-Pseudocode for applying a given positive or negative number of steps to a given degree of a given key and return the final pitch
-T}
-13	T{
-Pseudocode showing how a list of all keys where each contains all of the notes given as input is returned
-T}
-14	T{
-Pseudocode showing how to check whether a given degree is altered by a given alteration in a given mode relative to the major scale.
-T}
-15	T{
-Pseudocode for building the triad of a given degree of a given key with any given extensions
-T}
-16	T{
-Pseudocode showing how melody generation in our system is achieved using a stochastic implementation of the chord-based model.
-T}
-17	T{
-Pseudocode showing how bassline improvement is achieved using a recursive depth-first search
-T}
-18	T{
-Pseudocode showing the logic for writing our internal line representation as MusicXML
-T}
-19	T{
-Pseudocode showing how to produce a list representing which lines of the stave should be altered to represent a given key signature
-T}
-20	T{
-Output from the terminal key signature stave display for F# major, which has 6 sharps.
-T}
-21	T{
-Terminal fretboard diagram showing C natural Ionian.
-T}
-23	Melody note pitch distribution and comparison
-24	Melody note pitch transition distribution and comparison
-25	Chord distribution and comparison
-26	Chord transition distribution and comparison
-27	Structure of project source files
-.TE
-.SH 1
 List of abbreviations
 .LP
 .TS
@@ -2140,6 +2073,17 @@ Project Management
 	Project Management
 .XE
 .nr f +1
+.LP
+In the first semester of the academic year I created a gantt chart shown in 
+figure \nf to create a time management plan for the project. As you can see,
+I overestimated how much time could be spent in total on the project, however
+the order and proportion of time allocated to each activity roughly corresponds
+to how the work was actually carried out.
+One major difference is that work on development and the report was done
+more sequentially than concurrently. This was mainly because I found that
+I would have to keep changing the report based on alterations made to the
+implementation so it was simpler to wait until the implementation became more
+final and report it then.
 .B1
 .PSPIC img/gantt22.eps
 .PSPIC img/gantt23.eps
@@ -2295,5 +2239,80 @@ as it would seem each new extension enables the addition of several more, all
 exciting to me in a different way.
 .bp
 .ds CF
+.XS no
+.B "List of figures"
+.XA 12
+Figure 1 - Example program functionality graphic representation
+.XA 13
+Figure 2 - Mode generator functionality graphic representation
+.XA 13
+Figure 3 - Interval filter functionality graphic representation
+.XA 14
+Figure 4 - Chord builder functionality graphic representation
+.XA 14
+Figure 5 - Melody generator functionality graphic representation
+.XA 14
+Figure 6 - Melody harmoniser functionality graphic representation
+.XA 15
+Figure 7 - MusicXML generator functionality graphic representation
+.XA 15
+Figure 8 - Fretboard formatter functionality graphic representation
+.XA 15
+Figure 9 - Stave formatter functionality graphic representation
+.XA 16
+Figure 10 - Full pipeline from modes to harmonies graphic representation
+.XA 18
+Figure 11 - How it is determined whether a given accidental is correct
+.XA 19
+Figure 12 - How steps are applied to a pitch in a key
+.XA 19
+Figure 13 - How a list of keys is obtained with all containing all given notes
+.XA 20
+Figure 14 - How the alteration of a degree in a key is checked
+.XA 20
+Figure 15 - How triad chords are built and extended
+.XA 21
+Figure 16 - How melodies are generated
+.XA 22
+Figure 17 - How basslinse are improved using a depth first search
+.XA 23
+Figure 18 - How a line is converted to MusicXML
+.XA 24
+Figure 19 - How a list can be produced to represent a music stave
+.XA 24
+Figure 20 - Example key signature formatting on a stave
+.XA 25
+Figure 21 - Example fretboard formatting of a mode
+.XA 25
+Figure 22 - How degrees of a mode are written to a guitar string format
+.XA 26
+Figure 23 - Project file structure
+.XA 28
+Figure 24 - Note pitch distribution analysis
+.XA 29
+Figure 25 - Note pitch transition distribution analysis
+.XA 30
+Figure 26 - Chord degree distribution analysis
+.XA 31
+Figure 27 - Chord degree transition distribution analysis
+.XA 32
+Figure 28 - Project management gantt chart
+.XA no
+.B "List of Tables"
+.XA 4
+Table 1 - How this project combines elements of existing works
+.XA 9
+Table 2 - Chord tonality in the major scale
+.XA 10
+Table 3 - Modes of the major scale
+.XA 16
+Table 4 - Input and output types of the component programs
+.XA 17
+Table 5 - Musical data encoding in our system
+.XA 22
+Table 6 - Bass and melody chord degree combinations
+.XA 25
+Table 7 - Guitar string pitch offsets
+.XE
 .TC
 .bp
