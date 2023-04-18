@@ -727,7 +727,7 @@ above { N = roman{"set of notes passed as arguments"} }
 Figure \n+f shows the functionality of the mode generator in terms of its input
 and output types.
 .PS
-F: box "Figure \nf: graphic representation of mode generator I/O types" invis at (1,-1)
+F: box "Figure \nf: Graphic representation of mode generator I/O types" invis at (1,-1)
 A: box "mode set*" invis 0.7 at (-0.5, 0)
 P: box "mode generator" wid 1 at (1, 0)
 B: box "mode set" invis wid 0.7 at (2.5, 0)
@@ -760,7 +760,7 @@ above { I = roman{"set of intervals passed as arguments"} }
 Figure \n+f shows the functionality of the interval filter in terms of its input
 and output types.
 .PS
-F: box "Figure \nf: graphic representation of interval filter I/O types" invis at (1,-1)
+F: box "Figure \nf: Graphic representation of interval filter I/O types" invis at (1,-1)
 A: box "mode set*" invis 0.7 at (-0.5, 0)
 P: box "interval filter" wid 1 at (1, 0)
 B: box "mode set" invis wid 0.7 at (2.5, 0)
@@ -789,7 +789,7 @@ if no modes are supplied the set of all modes is used.
 Figure \n+f shows the functionality of the chord builder in terms of its input
 and output types.
 .PS
-F: box "Figure \nf: graphic representation of chord builder I/O types" invis at (1,-1)
+F: box "Figure \nf: Graphic representation of chord builder I/O types" invis at (1,-1)
 A: box "mode set*" invis wid 0.7 at (-0.5, 0)
 P: box "chord builder" wid 1 at (1, 0)
 B: box "chord set" invis wid 0.7 at (2.5, 0)
@@ -812,7 +812,7 @@ chord. In addition to a set of chords as input, it takes the length of the
 melody to be generated and a seed value for randomness.
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of melody generator I/O types" invis at (1, -1)
+F: box "Figure \nf: Graphic representation of melody generator I/O types" invis at (1, -1)
 A: box "chord set" invis wid 0.7 at (-0.5, 0)
 P: box "melody generator" wid 1 at (1, 0)
 B: box "melody set" invis wid 0.7 at (2.5, 0)
@@ -835,7 +835,7 @@ Each 3-part harmony has the melody in the highest pitch line, with 2 accompanyin
 lines beneath it in pitch.
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of melody harmoniser I/O types" invis at (1, -0.5)
+F: box "Figure \nf: Graphic representation of melody harmoniser I/O types" invis at (1, -0.5)
 A: box "melody set" invis wid 0.7 at (-1, 0)
 P: box "melody harmoniser" wid 1.2 at (1, 0)
 B: box "harmonised-melody set" invis wid 1.5 at (3, 0)
@@ -856,7 +856,7 @@ musicxml01
 which can be opened by various ScoreWriters.
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of musicxml formatter I/O types" invis at (1, -0.5)
+F: box "Figure \nf: Graphic representation of musicxml formatter I/O types" invis at (1, -0.5)
 A: box "harmonised melody set" invis wid 1.5 at (-1, 0)
 P: box "musicxml formatter" wid 1.2 at (1, 0)
 B: box "musicxml data" invis wid 1 at (3, 0)
@@ -878,7 +878,7 @@ There is one to display modes on a guitar fretboard and one to display them
 on a stave using traditional key signature notation.
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of fretboard formatter I/O types" invis at (1,-0.5)
+F: box "Figure \nf: Graphic representation of fretboard formatter I/O types" invis at (1,-0.5)
 A: box "mode set" invis wid 0.7 at (-1, 0)
 P: box "fretboard formatter" wid 1.2 at (1, 0)
 B: box "fretboard display" invis wid 1 at (3, 0)
@@ -887,7 +887,7 @@ arrow from P.e to B.w
 .PE
 .nr f +1
 .PS
-F: box "Figure \nf: graphic representation of stave formatter I/O types" invis at (1, -0.5)
+F: box "Figure \nf: Graphic representation of stave formatter I/O types" invis at (1, -0.5)
 A: box "mode set" invis wid 0.7 at (-1, 0)
 P: box "stave formatter" wid 1.2 at (1, 0)
 B: box "stave display" invis wid 1 at (3, 0)
@@ -912,7 +912,7 @@ modes outputted by the interval filter because for each of the programs
 between them there is one member in the output set generated from each 
 member of the input set. 
 .PS
-F: box "Figure \nf: graphic representation of pipeline from modes to harmonies" invis at (2.25, -1.1)
+F: box "Figure \nf: Graphic representation of pipeline from modes to harmonies" invis at (2.25, -1.1)
 A: box "mode" "generator" wid 0.6 at (0, 0)
 B: box "interval" "filter" wid 0.6 at (0.75, 0)
 C: box "chord" "builder" wid 0.6 at (1.5,0)
@@ -1177,7 +1177,7 @@ is_correct_accidental(key, accidental)
 .ft
 .DE
 .DS C
-Figure \nf: pseudocode for determining whether a given accidental is the correct
+Figure \nf: Pseudocode for determining whether a given accidental is the correct
 one for writing a given key signature with
 .DE
 The idea here is two iterate through pitches in the key and check that if there
@@ -1215,7 +1215,7 @@ apply_steps(degree, key, steps)
 .ft
 .DE
 .DS C
-Figure \nf: pseudocode for applying a given positive or negative number of steps
+Figure \nf: Pseudocode for applying a given positive or negative number of steps
 to a given degree of a given key and return the final pitch
 .DE
 As you can see, the idea here is to repeatedly add the intervals of the major
@@ -1246,7 +1246,7 @@ process_notes(notes)
 .ft
 .DE
 .DS C
-Figure \nf: pseudocode showing how a list of all keys where each contains
+Figure \nf: Pseudocode showing how a list of all keys where each contains
 all of the notes given as input is returned
 .DE
 The idea here is to iterate through all the inputted notes and for each one,
@@ -2274,11 +2274,11 @@ Figure 16 - How melodies are generated
 Figure 17 - How basslinse are improved using a depth first search
 .XA 23
 Figure 18 - How a line is converted to MusicXML
-.XA 24
+.XA 23
 Figure 19 - How a list can be produced to represent a music stave
 .XA 24
 Figure 20 - Example key signature formatting on a stave
-.XA 25
+.XA 24
 Figure 21 - Example fretboard formatting of a mode
 .XA 25
 Figure 22 - How degrees of a mode are written to a guitar string format
