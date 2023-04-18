@@ -712,18 +712,16 @@ If STDIN input is supplied then only modes also in the input set will be in
 the output set, otherwise all modes are considered.
 This functionality can be formalised using the following notation:
 This functionality is formally defined in equation \n+e
-.EQ
+.EQ (1)
 pile {
-INP = roman{"set of modes inputted via STDIN"} 
+output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]
+above { roman{"where"} }
+above {INP = roman{"set of modes inputted via STDIN"}} 
 above { M = roman{"set of all modes"} }
-above { N = roman{"set of notes passed as arguments"} }
 above { P(m) = \[fa]n\[mo]N:n\[mo]m }
-above { output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]}
+above { N = roman{"set of notes passed as arguments"} }
 }
 .EN
-.DS C
-Equation \ne: mode generator output defined using set notation
-.DE
 Figure \n+f shows the functionality of the mode generator in terms of its input
 and output types.
 .PS
@@ -747,18 +745,16 @@ a set of intervals. It outputs all of the modes from the input which have the
 intervals specified. If no modes are given as input it outputs the modes from
 the set of all modes which have those intervals. 
 Equation \n+e formally defines this functionality.
-.EQ
+.EQ (2)
 pile {
-INP = roman{"set of modes inputted via STDIN"} 
+output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]
+above {roman{"where"}}
+above {INP = roman{"set of modes inputted via STDIN"} }
 above { M = roman{"set of all modes"} }
-above { I = roman{"set of intervals passed as arguments"} }
 above { P(m) = \[fa]i\[mo]I:i\[mo]m }
-above { output = \[lC] m\[mo]M | (m \[mo] INP \[OR] INP = \[es]) \[AN] P(m) \[rC]}
+above { I = roman{"set of intervals passed as arguments"} }
 }
 .EN
-.DS C
-Equation \n+e: interval filter output defined using set notation
-.DE
 Figure \n+f shows the functionality of the interval filter in terms of its input
 and output types.
 .PS
@@ -1431,18 +1427,17 @@ by counting its faults.
 These evaluations
 then back-propagate up the tree so that the optimal path in the tree can be
 determined by picking the child with the least faults at each stage.
-.EQ
+Equation 3 shows the properties of the search tree during the bassline
+improvement step of harmonisation.
+.EQ (3)
 pile {
-n = roman{"melody length"} 
-above {roman{"tree height"} = n -1 }
+roman{"tree height"} = n -1 
 above { roman{"maximum possible viable basslines (leaves)"} = 4 sup n }
 above { roman{"maximum total nodes in tree"} = {4 sup {n+1} - 1} over 3 }
+above { roman{"where"}}
+above {n = roman{"melody length"}} 
 }
 .EN
-.DS C
-Equation \n+e: Properties of the search tree explored during the bassline improvement
-step of harmonisation
-.DE
 .DS
 .ft C
 improve_bassline(bassline, melody, current_beat, key)
