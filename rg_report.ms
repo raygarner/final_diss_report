@@ -2,15 +2,7 @@
 .nr t 0 1
 .nr e 0 1
 .TL
-Unix Style Computer Aided Composition
-.AU
-Ray Garner
-.AU
-20156967 
-.AU
-psyrg4@nottingham.ac.uk
-.AI
-Computer Science with Year in Industry Bsc
+
 .AB
 Computer aided composition is when a musician employs software tools to
 create music.
@@ -24,7 +16,7 @@ text streams and pipes and comparing the results to existing popular composition
 Eight different programs were produced which could be combined in various ways
 to provide different functionality including mode generation, mode filtering,
 chord generation, melody generation and melody harmonisation.
-Output was was quantitatively analysed, with the results being compared against
+Output was quantitatively analysed, with the results being compared against
 Bach compositions and folksongs to show that they align with the fundamental 
 ideas of what makes music pleasant.
 The system was designed so that in the future new programs could be written 

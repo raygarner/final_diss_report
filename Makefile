@@ -7,7 +7,8 @@ main: $(TITLE).ms
 	refer -e -S -sA -p ~/docs/roff/bib $(TITLE).ms | \
 		groff -ms -e -t -p -Tps > $(TITLE).ps
 	ps2pdf $(TITLE).ps temp.pdf
-	pdftk temp.pdf cat 1-2 r3 3-r4 r2-r1 output $(TITLE).pdf
+	pdftk temp.pdf cat 1-2 r3 3-r4 r2-r1 output $(TITLE)_temp.pdf
+	pdftk title_page.pdf $(TITLE)_temp.pdf cat output $(TITLE).pdf
 
 appendix: $(APPENDIX).ms
 	groff -ms -t -Tpdf $(APPENDIX).ms > $(APPENDIX).pdf
@@ -21,4 +22,4 @@ wc: $(TITLE).ms
 		sed -e '/^</d' | wc -w
 
 clean:
-	rm -f *.ps temp.pdf
+	rm -f *.ps *temp.pdf

@@ -3,13 +3,7 @@ Unix Style Computer Aided Composition
 
 Appendix A: Function Listings
 .AU
-Ray Garner
-.AU
 20156967 
-.AU
-psyrg4@nottingham.ac.uk
-.AI
-Computer Science with Year in Industry Bsc
 .NH 1
 Common Data
 .LP
