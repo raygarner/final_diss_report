@@ -1,3 +1,5 @@
+.nr GROWPS 4
+.nr PSINCR 0.5p
 .ds CH
 .ds CF -\En[PN]-
 .ds CF
