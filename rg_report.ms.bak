@@ -285,7 +285,7 @@ Omissions from the project scope
 		Omissions from the project scope
 .XE
 .LP
-Some features have been explicitly omitted from the scope of the project to
+Some features have been explictly omitted from the scope of the project to
 allow for greater focus what constitutes the core essence of the system.
 This is not to say that these things may not be built on top of this system in
 the future. It is important that this solution is extendable but this 
@@ -326,9 +326,9 @@ Dissertation Structure
 	Dissertation Structure
 .XE
 .LP
-This dissertation begins by examining a variety of existing research on the
+This dissertation begins by examing a variety of existing research on the
 topic of computer aided composition and analysing their approaches.
-Following this, methodologies used for our work are outlined and a high level
+Following this, methodoligies used for our work are outlined and a high level
 design of the software written is given.
 All of the core algorithms and data structures are described in the implementation
 section and then the evaluation section compares output from our system to
@@ -406,7 +406,7 @@ My goal with this project is inline with the IRCAM philosophy, however I want
 to implement a solution using a methodology inline with the Bellcore philosophy
 (Unix philosophy).
 The target users of the software developed for this project overlap with
-those targeted by the IRCAM designers: competent composers who would rather
+those targeted by the IRCAM designers: comptetent composers who would rather
 have freedom of expression than full automation of composition.
 .NH 2
 Bellcore
@@ -1207,7 +1207,7 @@ Internal
 		Internal
 .XE
 .LP
-Among other things, the shared internal functions facilitate using modes as 
+Amongst other things, the shared internal functions facilitate using modes as 
 frameworks within our semitonal pitch encoding scheme.
 The methods to implement this functionality make use of modular arithmetic to
 make sure that scales and pitches `wrap around' (one semitone above G# is A).
@@ -2071,7 +2071,7 @@ to even out the distribution of degrees and transitions (probably by
 injecting randomness) but the output clearly aligns with fundamental ideas
 of what makes music pleasant, as per our original aim for this aspect.
 The fact that these results were produced using modular pipelines satisfies our
-architectural goal of flexibility achieved the use of compatible orthogonal
+architectural goal of flexibility achieved the use of compatable orthogonal
 programs.
 .bp
 .NH 1
@@ -2115,14 +2115,14 @@ Personal
 .XE
 .LP
 I am pleased with the software resulting from this research project. It satisfies
-the original goals I laid out and, if nothing else, I will have personal use
+the original goals I layed out and, if nothing else, I will have personal use
 for it as a musician myself.
 My favourite part of the whole project was writing the software and seeing
 the functionality be built up bit by bit each time a new program could be
 added to the pipeline.
 My least favourite part of the whole project was carrying out the evaluation
 because, to me at least, it is obvious when music is pleasing
-but to quantitatively prove it is far less intuitive.
+but to quantitavely prove it is far less intuitive.
 .NH 3
 Technical
 .XS
@@ -2286,7 +2286,7 @@ Figure 15 - How triad chords are built and extended
 .XA 21
 Figure 16 - How melodies are generated
 .XA 22
-Figure 17 - How basslines are improved using a depth first search
+Figure 17 - How basslinse are improved using a depth first search
 .XA 23
 Figure 18 - How a line is converted to MusicXML
 .XA 23
